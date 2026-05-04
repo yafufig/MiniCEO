@@ -1016,16 +1016,12 @@
       align-self: center;
       transition: color .15s;
     }
+    /* В открытом состоянии подпись прячем — индикатор «−» в шевроне сам говорит за себя */
     .task-card[open] > summary::after,
     .proj-card[open] > summary::after,
     .mockup-details[open] > summary::after {
-      content: 'Свернуть';
-      color: var(--ink);
-    }
-    [data-theme="dark"] .task-card[open] > summary::after,
-    [data-theme="dark"] .proj-card[open] > summary::after,
-    [data-theme="dark"] .mockup-details[open] > summary::after {
-      color: var(--yellow);
+      content: '';
+      display: none;
     }
     .task-card:hover > summary::after,
     .proj-card:hover > summary::after,
