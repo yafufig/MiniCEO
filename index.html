@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отборочное Мини-CEO · Дмитрий Ярочкин · Май 2026</title>
+  <meta name="description" content="Отборочное задание Мини-CEO Т-Банка: о себе, разбор UX чата поддержки, план достижения 60% автоматизации за 24 месяца.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/styles.css">
+
+  <style>
+    /* ── Block dividers ─────────────────────────────────────── */
+    .block-divider-section {
+      padding: 80px 20px 40px;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-dim) 100%);
+      color: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .block-divider-section {
+      background: linear-gradient(135deg, rgba(255,221,45,.18) 0%, rgba(255,221,45,.08) 100%);
+      color: var(--text);
+      border-top: 2px solid var(--yellow);
+      border-bottom: 2px solid var(--yellow);
+    }
+    .block-divider__inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .block-divider__num {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 14vw, 160px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.85;
+      color: var(--ink);
+      opacity: 0.16;
+      margin-bottom: -16px;
+    }
+    [data-theme="dark"] .block-divider__num {
+      color: var(--yellow);
+      opacity: 0.25;
+    }
+    .block-divider__label {
+      display: inline-block;
+      padding: 6px 14px;
+      background: var(--ink);
+      color: var(--yellow);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    [data-theme="dark"] .block-divider__label {
+      background: var(--yellow);
+      color: var(--ink);
+    }
+    .block-divider__title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    [data-theme="dark"] .block-divider__title {
+      color: var(--text);
+    }
+    .block-divider__lead {
+      font-size: clamp(15px, 1.6vw, 18px);
+      line-height: 1.55;
+      color: var(--ink);
+      max-width: 720px;
+      font-weight: 500;
+    }
+    [data-theme="dark"] .block-divider__lead {
+      color: var(--text2);
+    }
+
+    /* ── Topbar block group switcher ─────────────────────────── */
+    .nav__group {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+    .nav__group-link {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text2);
+      padding: 6px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: background .15s, color .15s;
+    }
+    .nav__group-link:hover {
+      background: var(--surface);
+      color: var(--text);
+    }
+    .nav__group-link.is-active {
+      background: var(--yellow);
+      color: var(--ink);
+      font-weight: 700;
+    }
+    @media (max-width: 1020px) {
+      .nav__group { display: none; }
+      /* На мобильном/планшете прячем и кнопку «Разделы» — она ничего не открывает */
+      .nav__toggle { display: none !important; }
+      .nav { display: none !important; }
+    }
+
+    /* ── Side-nav with block groups ──────────────────────────── */
+    .side-nav__group {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    .side-nav__group:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+    .side-nav__group-label {
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text3);
+      padding: 4px 6px 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .side-nav__group-label::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--yellow);
+    }
+
+    /* ── Vibe mockup ─────────────────────────────────────────── */
+    .vibe-mockup-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 24px;
+    }
+    @media (max-width: 720px) {
+      .vibe-mockup-row { grid-template-columns: 1fr; }
+    }
+    .vibe-phone {
+      background: #161819;
+      border-radius: 28px;
+      padding: 0;
+      border: 4px solid #2a2d33;
+      max-width: 320px;
+      margin: 0 auto;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .vibe-phone__header {
+      background: #1f2126;
+      color: #f0f1f3;
+      padding: 14px 16px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid #2a2d33;
+    }
+    .vibe-phone__avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: var(--ink);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .vibe-phone__title { line-height: 1.2; }
+    .vibe-phone__subtitle { font-size: 10.5px; color: #8891a5; font-weight: 500; }
+    .vibe-phone__body {
+      padding: 14px 12px;
+      background: #161819;
+      min-height: 280px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e8e9ed;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .vibe-msg {
+      max-width: 80%;
+      padding: 8px 12px;
+      border-radius: 14px;
+      font-size: 12.5px;
+      line-height: 1.4;
+    }
+    .vibe-msg--bot {
+      background: #2a2d33;
+      color: #e8e9ed;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .vibe-msg--user {
+      background: #2b78de;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .vibe-msg--system {
+      background: rgba(255,221,45,0.1);
+      color: #ffdd2d;
+      align-self: center;
+      font-size: 11px;
+      text-align: center;
+      max-width: 90%;
+      border: 1px dashed rgba(255,221,45,0.3);
+    }
+    .vibe-msg--bot a { color: #4da3ff; text-decoration: underline; }
+    .vibe-extra {
+      font-size: 11px;
+      color: #8891a5;
+      padding: 8px 4px;
+      line-height: 1.5;
+    }
+    .vibe-extra b { color: #ffdd2d; font-weight: 600; }
+    .vibe-mockup-caption {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text3);
+      margin-top: 10px;
+    }
+    .vibe-mockup-label {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    [data-theme="dark"] .vibe-mockup-label { color: var(--text); }
+    .vibe-mockup-label--before { color: var(--danger); }
+    .vibe-mockup-label--after { color: var(--success); }
+
+    /* ── Real screenshots в виде телефонов со скроллом ──────── */
+    .screenshots-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 28px;
+      align-items: start;
+      justify-items: center;
+    }
+    @media (max-width: 720px) {
+      .screenshots-row { grid-template-columns: 1fr; gap: 28px; }
+    }
+    .phone-screenshot {
+      max-width: 290px;
+      width: 100%;
+      background: #1a1c22;
+      border-radius: 42px;
+      padding: 11px;
+      box-shadow:
+        0 30px 60px rgba(0,0,0,0.32),
+        0 8px 16px rgba(0,0,0,0.18),
+        inset 0 0 0 1.5px rgba(255,255,255,0.07);
+      position: relative;
+      transition: transform .25s var(--ease-spring), box-shadow .25s;
+    }
+    [data-theme="light"] .phone-screenshot {
+      background: #2a2d33;
+      box-shadow:
+        0 24px 56px rgba(0,0,0,0.22),
+        0 6px 14px rgba(0,0,0,0.10),
+        inset 0 0 0 1.5px rgba(255,255,255,0.06);
+    }
+    .phone-screenshot:hover {
+      transform: translateY(-4px);
+    }
+    /* Боковые кнопки телефона */
+    .phone-screenshot::before {
+      content: '';
+      position: absolute;
+      left: -3px;
+      top: 110px;
+      width: 3px;
+      height: 80px;
+      background: #2a2d33;
+      border-radius: 2px 0 0 2px;
+    }
+    .phone-screenshot::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      top: 130px;
+      width: 3px;
+      height: 50px;
+      background: #2a2d33;
+      border-radius: 0 2px 2px 0;
+    }
+    .phone-screenshot__screen {
+      border-radius: 32px;
+      overflow: hidden;
+      background: #000;
+      height: 580px;
+      position: relative;
+    }
+    /* Notch / Dynamic Island */
+    .phone-screenshot__notch {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 96px;
+      height: 24px;
+      background: #000;
+      border-radius: 999px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    /* Home indicator */
+    .phone-screenshot__home {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 4px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 999px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .phone-screenshot__scroll {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.25) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .phone-screenshot__scroll::-webkit-scrollbar { width: 5px; }
+    .phone-screenshot__scroll::-webkit-scrollbar-track { background: transparent; }
+    .phone-screenshot__scroll::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.25);
+      border-radius: 999px;
+    }
+    .phone-screenshot__scroll img {
+      width: 100%;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .phone-screenshot__hint {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: rgba(255,255,255,0.8);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      z-index: 4;
+      pointer-events: none;
+      animation: phoneScrollHint 2.5s ease-in-out infinite;
+      backdrop-filter: blur(8px);
+    }
+    @keyframes phoneScrollHint {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, 0); }
+      50% { opacity: 1; transform: translate(-50%, -3px); }
+    }
+    .phone-caption {
+      max-width: 290px;
+      margin: 14px auto 0;
+      font-size: 13px;
+      color: var(--text3);
+      line-height: 1.55;
+      text-align: left;
+    }
+    .phone-caption b { color: var(--ink); }
+    [data-theme="dark"] .phone-caption b { color: var(--text); }
+    .phone-caption__title {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 6px;
+      display: block;
+    }
+    [data-theme="dark"] .phone-caption__title { color: var(--text); }
+
+    /* ── Brief / Контекст задания ────────────────────────────── */
+    .brief-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (max-width: 920px) {
+      .brief-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .brief-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      border-left: 3px solid var(--yellow);
+    }
+    .brief-card__value {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .brief-card__value { color: var(--text); }
+    .brief-card__label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text3);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .brief-cluster {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 14px 18px;
+      margin-bottom: 8px;
+    }
+    .brief-cluster__name {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 14.5px;
+    }
+    [data-theme="dark"] .brief-cluster__name { color: var(--text); }
+    .brief-cluster__detail {
+      font-size: 13px;
+      color: var(--text2);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+    .brief-criteria {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+    @media (max-width: 720px) {
+      .brief-criteria { grid-template-columns: 1fr 1fr; }
+    }
+    .brief-criterion {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--yellow);
+      border-radius: var(--r-md);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      color: var(--text2);
+      line-height: 1.45;
+    }
+    .brief-criterion b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    [data-theme="dark"] .brief-criterion b { color: var(--text); }
+
+    /* ── Big stats card (4-box for "сколько это стоит") ─────── */
+    .big-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    @media (max-width: 720px) {
+      .big-stats { grid-template-columns: 1fr 1fr; }
+    }
+    .big-stats__cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--yellow);
+      border-radius: var(--r-md);
+      padding: 16px 18px;
+    }
+    .big-stats__value {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.6vw, 32px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .big-stats__value { color: var(--text); }
+    .big-stats__label {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ── Wave card ───────────────────────────────────────────── */
+    .wave-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 20px 22px;
+      border-top: 3px solid var(--yellow);
+      margin-bottom: 14px;
+    }
+    .wave-card__head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .wave-card__num {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -0.03em;
+    }
+    [data-theme="dark"] .wave-card__num { color: var(--text); }
+    .wave-card__period {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--yellow);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    /* ── Data table ──────────────────────────────────────────── */
+    .data-table {
+      margin-top: 16px;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+    .data-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      min-width: 640px;
+    }
+    .data-table th, .data-table td {
+      padding: 11px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .data-table thead th {
+      background: var(--ink);
+      color: rgba(255,255,255,0.85);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: none;
+    }
+    .data-table tbody tr:hover { background: rgba(255,221,45,0.04); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table td b { color: var(--ink); }
+    [data-theme="dark"] .data-table td b { color: var(--text); }
+    .data-table tfoot td {
+      background: rgba(255,221,45,0.10);
+      font-weight: 700;
+      border-top: 2px solid var(--yellow);
+    }
+
+    /* ── Inline equation block ───────────────────────────────── */
+    .eq-block {
+      margin: 14px 0;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(255,221,45,0.10), rgba(255,221,45,0.02));
+      border: 1px solid rgba(255,221,45,0.35);
+      border-radius: var(--r-md);
+      font-family: var(--font-display);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    [data-theme="dark"] .eq-block { color: var(--text); }
+    .eq-block__caption {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--text3);
+      letter-spacing: 0;
+      font-weight: 500;
+    }
+
+    /* ── Subsection h4 anchor ────────────────────────────────── */
+    h4.sub-section {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 24px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--yellow);
+      display: inline-block;
+    }
+    [data-theme="dark"] h4.sub-section { color: var(--text); }
+
+    /* ── Checkpoint strip ────────────────────────────────────── */
+    .checkpoints {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin-top: 18px;
+    }
+    @media (max-width: 720px) {
+      .checkpoints { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    .checkpoint {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--yellow);
+      border-radius: var(--r-md);
+      padding: 12px;
+      text-align: center;
+    }
+    .checkpoint__when {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .checkpoint__when { color: var(--text); }
+    .checkpoint__value {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--yellow-dim);
+      margin-top: 4px;
+    }
+    [data-theme="dark"] .checkpoint__value { color: var(--yellow); }
+    .checkpoint:last-child .checkpoint__value { color: var(--success); }
+
+    /* ── Final message ───────────────────────────────────────── */
+    .final-message {
+      background: linear-gradient(135deg, rgba(255,221,45,0.14), rgba(255,221,45,0.04));
+      border: 1.5px solid rgba(255,221,45,0.4);
+      border-radius: var(--r-xl);
+      padding: 28px 30px;
+      margin-top: 32px;
+      text-align: center;
+    }
+    .final-message__label {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: var(--yellow);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    .final-message__text {
+      font-family: var(--font-display);
+      font-size: clamp(17px, 2.2vw, 22px);
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .final-message__text { color: var(--text); }
+
+    /* ── Email/Telegram link in hero ─────────────────────────── */
+    .hero__contact {
+      font-size: 14px;
+      color: var(--text3);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+    .hero__contact a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    [data-theme="dark"] .hero__contact a { color: var(--info); }
+    .hero__contact a:hover { text-decoration: underline; }
+
+    /* ── Footer alignment with side-nav ──────────────────────── */
+    @media (min-width: 1280px) {
+      .footer { margin-left: 220px; }
+    }
+    .footer__inner { gap: 16px; flex-wrap: wrap; }
+
+    /* ── Hero CTA wrap fix ───────────────────────────────────── */
+    .hero__cta {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ── Brief KPI grid responsiveness ───────────────────────── */
+    @media (max-width: 1180px) and (min-width: 921px) {
+      .brief-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .brief-grid { grid-template-columns: 1fr 1fr; }
+      .brief-card { padding: 10px 12px; }
+    }
+
+    /* ── Brief criteria grid responsiveness ──────────────────── */
+    @media (max-width: 980px) and (min-width: 721px) {
+      .brief-criteria { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ── Checkpoint 6 cells fix on tablet ────────────────────── */
+    @media (max-width: 980px) and (min-width: 561px) {
+      .checkpoints { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ── Section spacing (a bit more breathing room) ─────────── */
+    .section { padding: 64px 20px; }
+    @media (max-width: 720px) { .section { padding: 44px 16px; } }
+
+    /* ── Block divider spacing on small screens ──────────────── */
+    @media (max-width: 720px) {
+      .block-divider-section { padding: 56px 16px 32px; }
+      .block-divider__num { font-size: 72px; margin-bottom: -8px; }
+      .block-divider__title { font-size: 36px; }
+    }
+
+    /* ── Hero responsiveness ─────────────────────────────────── */
+    @media (max-width: 720px) {
+      .hero { padding: 52px 16px 64px; }
+      .hero__title { font-size: clamp(40px, 11vw, 56px) !important; }
+      .hero__lead { font-size: 15px; }
+    }
+
+    /* ── Phone screenshots responsive ────────────────────────── */
+    @media (max-width: 720px) {
+      .phone-screenshot { max-width: 260px; }
+      .phone-screenshot__screen { height: 480px; }
+    }
+
+    /* ── Tables: nicer wrap on small screens ─────────────────── */
+    @media (max-width: 720px) {
+      .data-table { font-size: 12.5px; }
+      .data-table th, .data-table td { padding: 9px 10px; }
+    }
+
+    /* ── Equation block responsive ───────────────────────────── */
+    @media (max-width: 720px) {
+      .eq-block { font-size: 14px; padding: 14px 16px; line-height: 1.5; }
+    }
+
+    /* ── Wave card head wrap ─────────────────────────────────── */
+    .wave-card__head { gap: 10px; }
+
+    /* ── Final message responsive ────────────────────────────── */
+    @media (max-width: 720px) {
+      .final-message { padding: 22px 18px; }
+      .final-message__text { font-size: 16px; line-height: 1.5; }
+    }
+
+    /* ── Big stats responsive ────────────────────────────────── */
+    @media (max-width: 480px) {
+      .big-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ── Sub-section h4 line height ──────────────────────────── */
+    h4.sub-section { line-height: 1.25; max-width: 100%; }
+
+    /* ── List item spacing tighten ───────────────────────────── */
+    .list li { line-height: 1.55; }
+
+    /* ── Card hover smoother ─────────────────────────────────── */
+    .card { transition: transform .22s var(--ease-spring), box-shadow .22s, border-color .22s, background .35s; }
+
+    /* ── Header h2 tighten on small screens ──────────────────── */
+    @media (max-width: 720px) {
+      h2 { font-size: clamp(24px, 6.5vw, 32px) !important; line-height: 1.15; }
+    }
+
+    /* ── Phone caption responsive ────────────────────────────── */
+    @media (max-width: 720px) {
+      .phone-caption { max-width: 100%; padding: 0 8px; }
+    }
+
+    /* ── Cards 2-up on mobile ────────────────────────────────── */
+    @media (max-width: 720px) {
+      .cards--2, .cards--3 { grid-template-columns: 1fr !important; }
+    }
+
+    /* ── Hero KPI strip on small ─────────────────────────────── */
+    @media (max-width: 720px) {
+      .hero__kpi-strip { grid-template-columns: 1fr !important; }
+    }
+
+    /* ── Vibe phone smaller on small screens ─────────────────── */
+    @media (max-width: 720px) {
+      .vibe-phone { max-width: 100%; }
+    }
+
+    /* ── Side-nav max-height with many links ─────────────────── */
+    .side-nav { font-size: 11.5px; }
+    .side-nav__link { padding: 4px 8px; font-size: 11px; }
+    .side-nav__group { margin-top: 8px; padding-top: 6px; }
+
+    /* ── Topbar logo title smaller ───────────────────────────── */
+    @media (max-width: 720px) {
+      .brand__title { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Перейти к содержанию</a>
+
+  <header class="topbar" role="banner">
+    <div class="topbar__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true" style="overflow:hidden;padding:0;background:#FFDD2D;">
+          <img src="./brandbook/photo_5460910081051400239_x.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">
+        </div>
+        <div class="brand__text">
+          <div class="brand__title">Мини-CEO Т-Банк</div>
+          <div class="brand__subtitle">Дмитрий Ярочкин · Май 2026</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Навигация по блокам">
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="navMenu">
+          <span>Разделы</span>
+          <span class="nav__toggle-icon">▾</span>
+        </button>
+        <div class="nav__group" id="navMenu">
+          <a class="nav__group-link is-active" href="#hero">Старт</a>
+          <a class="nav__group-link" href="#brief">Контекст</a>
+          <a class="nav__group-link" href="#block-1">Блок 1</a>
+          <a class="nav__group-link" href="#block-2">Блок 2</a>
+          <a class="nav__group-link" href="#block-3">Блок 3</a>
+        </div>
+      </nav>
+
+      <div class="actions">
+        <span class="section-counter" id="sectionCounter" aria-live="polite">1 / 1</span>
+        <button class="btn--theme" type="button" id="themeToggle" aria-label="Переключить тему" title="Переключить тему">
+          <span class="icon-sun">☀️</span>
+          <span class="icon-moon">🌙</span>
+        </button>
+        <a class="btn" href="./IarochkinMiniCEO.pdf" download="IarochkinMiniCEO.pdf">Скачать PDF</a>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true">
+      <div class="progress__bar" id="progressBar" style="width:0%;"></div>
+    </div>
+  </header>
+
+  <nav class="side-nav" aria-label="Содержание">
+    <div class="side-nav__title">Содержание</div>
+    <div class="side-nav__list">
+      <a class="side-nav__link is-active" href="#hero">Шапка</a>
+      <a class="side-nav__link" href="#brief">Контекст задания</a>
+
+      <div class="side-nav__group">
+        <div class="side-nav__group-label">Блок 1 · О себе</div>
+        <a class="side-nav__link" href="#b1-context">1.1 Контекст</a>
+        <a class="side-nav__link" href="#b1-success">1.2 Успех — FM Logistic</a>
+        <a class="side-nav__link" href="#b1-failure">1.3 Провал — Quest</a>
+        <a class="side-nav__link" href="#b1-metric">1.4 Метрика обманула</a>
+      </div>
+
+      <div class="side-nav__group">
+        <div class="side-nav__group-label">Блок 2 · Продуктовое мышление</div>
+        <a class="side-nav__link" href="#b2-ux">2.1 UX чата поддержки</a>
+        <a class="side-nav__link" href="#b2-duolingo">2.2 Top — Duolingo</a>
+      </div>
+
+      <div class="side-nav__group">
+        <div class="side-nav__group-label">Блок 3 · План 60% автоматизации</div>
+        <a class="side-nav__link" href="#b3-goal">3.1 Цель и принцип</a>
+        <a class="side-nav__link" href="#b3-clusters">3.2 Группировка причин</a>
+        <a class="side-nav__link" href="#b3-waves">3.3 Короткий план</a>
+        <a class="side-nav__link" href="#b3-roadmap">3.4 Roadmap и вклад</a>
+        <a class="side-nav__link" href="#b3-hypotheses">3.5 Основные гипотезы</a>
+        <a class="side-nav__link" href="#b3-backlog">3.6 Backlog-гипотезы</a>
+        <a class="side-nav__link" href="#b3-priorities">3.7 Почему такие приоритеты</a>
+        <a class="side-nav__link" href="#b3-metrics">3.8 Метрики и релиз</a>
+        <a class="side-nav__link" href="#b3-risks">3.9 Риски</a>
+        <a class="side-nav__link" href="#b3-final">3.10 Целевое состояние</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="content" class="page" role="main">
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- HERO                                                     -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="hero slide" id="hero" data-slide-title="Старт">
+      <div class="hero__inner">
+        <div class="hero__eyebrow">Отборочное · Мини-CEO Т-Банк · Май 2026</div>
+
+        <div class="hero__app-icon" style="overflow:hidden;padding:0;background:#FFDD2D;">
+          <img src="./brandbook/photo_5460910081051400239_x.jpg" alt="T-Bank" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">
+        </div>
+
+        <h1 class="hero__title">Отборочное<br><mark>Мини-CEO</mark></h1>
+
+        <p class="hero__lead">
+          Три блока: <b>о себе</b> и продуктовые кейсы, <b>разбор UX чата поддержки Т-Банка</b>, <b>план достижения 60% автоматизации</b> с командой за 24 месяца.
+        </p>
+
+        <p class="hero__owner">
+          Дмитрий Ярочкин
+        </p>
+        <p class="hero__contact">
+          <a href="mailto:blackbonik@gmail.com">blackbonik@gmail.com</a> · <a href="https://t.me/YaFufig" target="_blank">@YaFufig</a>
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="#block-1">Блок 1 · О себе →</a>
+          <a class="btn" href="#block-2">Блок 2 · UX-разбор</a>
+          <a class="btn" href="#block-3">Блок 3 · План 60%</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- BRIEF / Контекст задания                                  -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="brief" data-slide-title="Контекст задания">
+      <div class="section__inner">
+        <div class="section-label-row" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div class="section-label">Контекст задания</div>
+          <img src="./brandbook/2cd20cae-a951-452c-b9aa-30741b7eb46b.svg" alt="T-Bank" style="height:28px;width:auto;display:block;border-radius:6px;" aria-label="Кейс по продукту T-Bank">
+        </div>
+        <h2>Отборочное Мини-CEO Т-Банк — что просили сделать</h2>
+        <p class="muted">
+          Задание состоит из трёх блоков. Цель — оценить продуктовое мышление, умение работать с данными и принимать решения в условиях ограничений. Ожидаемый объём — 3–6 страниц, формат свободный, правильного ответа нет; оценивается качество приоритизации и обоснованность решений.
+        </p>
+
+        <h4 class="sub-section">Структура задания</h4>
+        <div class="cards cards--3">
+          <div class="card card--feature">
+            <div class="card__icon">🧑‍💼</div>
+            <h3>Блок 1 · О вас</h3>
+            <p>Контекст (роль, продукт, что лично делал), кейс <b>успеха</b>, кейс <b>провала</b> и кейс, где <b>метрика обманула</b> (показывала рост, а продукт ухудшался).</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">🧠</div>
+            <h3>Блок 2 · Продуктовое мышление</h3>
+            <p>2.1 — открыть Главная → Чат в приложении Т-Банка, найти <b>3 проблемы UX/UI</b>, выделить главную, предложить решение, метрики (<b>бонус: вайб-дизайн</b>). 2.2 — выдающийся сервис: что хорошо, почему работает, что улучшить.</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">📈</div>
+            <h3>Блок 3 · Кейс автоматизации чат-бота</h3>
+            <p>Я — PM в Т-Банке, отвечаю за чат-бот поддержки. <b>Текущая автоматизация — 30%</b>. Цель бизнеса — <b>60% за 24 месяца, сохранив качество клиентского опыта</b>.</p>
+          </div>
+        </div>
+
+        <h4 class="sub-section">Цифры, с которыми я работаю (Блок 3)</h4>
+        <div class="brief-grid">
+          <div class="brief-card">
+            <div class="brief-card__value">~1,2 млн</div>
+            <div class="brief-card__label">чатов / мес</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">30% → 60%</div>
+            <div class="brief-card__label">текущая → целевая автоматизация</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">~360 / 840 тыс.</div>
+            <div class="brief-card__label">бот / оператор в месяц</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">24 мес</div>
+            <div class="brief-card__label">горизонт плана</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">3,2 vs 4,1</div>
+            <div class="brief-card__label">CSAT бота / оператора (из 5)</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">8% / 35%</div>
+            <div class="brief-card__label">VIP: доля базы / выручки</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">8 сек / 4 мин</div>
+            <div class="brief-card__label">время ответа: бот / оператор</div>
+          </div>
+          <div class="brief-card">
+            <div class="brief-card__value">9 человек</div>
+            <div class="brief-card__label">6 dev + 1 ML + 1 аналитик + 1 дизайнер</div>
+          </div>
+        </div>
+
+        <h4 class="sub-section">Распределение причин переводов на оператора (70%)</h4>
+        <p class="muted">
+          Это вход в задачу: 25 категорий с долями от всех чатов. Я их группирую в продуктовые кластеры (см. <a href="#b3-clusters" style="color:var(--accent);font-weight:600;">3.2</a>) и работаю с кластерами, а не со строками.
+        </p>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:78%">Категория</th><th>Доля от всех чатов</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(255,221,45,0.10);"><td><b>Неклассифицированные причины перевода</b></td><td><b>22,7%</b></td></tr>
+              <tr><td>Бот отключён для сегмента (VIP, гость, должник)</td><td>9,6%</td></tr>
+              <tr><td>Бот не смог продолжить — не хватает ветки сценария</td><td>6,7%</td></tr>
+              <tr><td>Продолжение предыдущего диалога (контекст потерян)</td><td>5,4%</td></tr>
+              <tr><td>Интент распознан, но ответа в сценарии нет</td><td>3,3%</td></tr>
+              <tr><td>Бот не знает такого намерения</td><td>3,1%</td></tr>
+              <tr><td>Клиент сразу зовёт оператора</td><td>3,0%</td></tr>
+              <tr><td>Техническая ошибка бота</td><td>2,6%</td></tr>
+              <tr><td>Клиент спрашивает в тему ответа (follow-up)</td><td>2,3%</td></tr>
+              <tr><td>Интент есть, но не поняли формулировку</td><td>1,7%</td></tr>
+              <tr><td>Клиент повторяет вопрос после ответа бота</td><td>1,4%</td></tr>
+              <tr><td>Бот не смог распарсить ответ клиента (слоты)</td><td>1,3%</td></tr>
+              <tr><td>Клиент зовёт оператора после ответа бота</td><td>1,1%</td></tr>
+              <tr><td>Клиент выразился слишком общо</td><td>1,0%</td></tr>
+              <tr><td>Ошибка классификации интента</td><td>0,9%</td></tr>
+              <tr><td>Клиент отправил только картинку/файл</td><td>0,8%</td></tr>
+              <tr><td>Клиент зовёт оператора в середине сценария</td><td>0,8%</td></tr>
+              <tr><td>Выражает намерение в нескольких сообщениях</td><td>0,4%</td></tr>
+              <tr><td>Отвечает картинкой внутри сценария</td><td>0,4%</td></tr>
+              <tr><td>Хочет закончить диалог</td><td>0,4%</td></tr>
+              <tr><td>Бот дал неперсонализированный/общий ответ</td><td>0,3%</td></tr>
+              <tr><td>Другое (бот не понял)</td><td>0,3%</td></tr>
+              <tr><td>Несколько вопросов в одном сообщении</td><td>0,2%</td></tr>
+              <tr><td>Другое (бот понял, но не решил)</td><td>0,2%</td></tr>
+              <tr><td>Бот дал неверный ответ</td><td>0,1%</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td><b>Итого переводов на оператора</b></td><td><b>70%</b></td></tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <h4 class="sub-section">Что нужно показать в плане (по заданию)</h4>
+        <div class="brief-criteria">
+          <div class="brief-criterion">
+            <b>Что и в каком порядке</b>
+            Конкретные шаги, последовательность инициатив на 24 месяца.
+          </div>
+          <div class="brief-criterion">
+            <b>Почему такие приоритеты</b>
+            Логика выбора: размер проблемы, риск, сложность, уверенность.
+          </div>
+          <div class="brief-criterion">
+            <b>Метрики успеха</b>
+            Как измеряем результат, что считаем «успешной автоматизацией».
+          </div>
+          <div class="brief-criterion">
+            <b>Контрметрики</b>
+            На что смотрим, чтобы не покупать рост ценой опыта.
+          </div>
+          <div class="brief-criterion">
+            <b>Trade-offs и риски</b>
+            Какие компромиссы принимаем осознанно и какие риски видим.
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top:24px;">
+          <h4>Как я понимаю задачу</h4>
+          <p>
+            Задание — не «техзадание на продакт-команду», а проверка <b>способа мышления</b>: как кандидат сводит данные, ограничения и ресурсы в осмысленный план. Поэтому ниже три блока соединены сквозной нитью: то, чему меня научили мои прошлые проекты (Блок 1) — то, что я вижу как главный UX-сбой в текущем чате (Блок 2) — и то, как я выстраиваю 24-месячный план (Блок 3).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- BLOCK 1 DIVIDER                                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="block-divider-section slide" id="block-1" data-slide-title="Блок 1">
+      <div class="block-divider__inner">
+        <div class="block-divider__num">01</div>
+        <div class="block-divider__label">Блок 1</div>
+        <h2 class="block-divider__title">О себе</h2>
+        <p class="block-divider__lead">
+          Контекст, кейс успеха (FM Logistic), кейс провала (Quest), кейс «метрика обманула» (HSTU в Яндексе).
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 1.1 Контекст                                              -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b1-context" data-slide-title="1.1 Контекст">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">1.1 / Контекст</div></div>
+        <h2>Кто я и чем занимаюсь</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Я ML-инженер с продуктовым уклоном, 2 курс Центрального университета (трек «Искусственный интеллект»). Мой основной интерес — AI-продукты, где важно не только обучить модель, но и довести решение до бизнес-результата: найти пользователя, понять задачу, собрать MVP и выбрать метрику, которая отражает реальную ценность.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          Сейчас веду несколько проектов с реальными клиентами: <b>YOS</b> — AI-конструктор сайтов на агентной архитектуре для МСБ-клиентов банков; <b>Сеченовский университет</b> — агент записи пациентов; <b>РЖД</b> — RAG-поддержка по базе знаний; <b>AR-очки для складов</b>. Во всех проектах занимаюсь продуктовой и ML-частями.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          Прошлые роли: <b>ML-стажёр в Яндексе</b> (RecSys), <b>стажёр-разработчик ИИ-агентов в Сбере</b>, <b>бизнес-аналитик «Даркстор у дома»</b>, <b>ML-инженер в Hired Minds</b> (Qatar). Победитель 5+ хакатонов, в т.ч. кейс-хакатона ЦУ и Т-Банк × МГУ.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 1.2 Кейс успеха                                           -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b1-success" data-slide-title="1.2 Успех">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">1.2 / Кейс успеха</div></div>
+        <h2>FM Logistic × «Даркстор у дома»</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Кейс с чемпионата международной 3PL-компании «Логистика 2.0», апрель 2026. У FM Logistic Россия (выручка 30,1 млрд ₽ за 2024, +24,6% год к году) сильная складская база, но нет express-вертикали ≤ 60 минут. При этом доля независимых 3PL в e-com упала за 7 лет с 34% до 5,2%, а карточки с express на Ozon показывают +30% к обороту. Запускать самим долго и дорого — нужен партнёр.
+        </p>
+
+        <h4 class="sub-section">Я сравнил три варианта с цифрами</h4>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th>Вариант</th><th>Стоимость</th><th>Срок</th><th>Покрытие</th><th>Риск</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Build</b> (строить самим)</td>
+                <td>148 млн ₽ / 1-й год</td>
+                <td>12–18 мес</td>
+                <td>1 город</td>
+                <td>Высокий</td>
+              </tr>
+              <tr style="background:rgba(255,221,45,0.06);">
+                <td><b>Buy / Partner</b> (с «Даркстор у дома»)</td>
+                <td>2,7 млн ₽ OPEX</td>
+                <td>1 квартал</td>
+                <td><b>88 городов</b></td>
+                <td>Ниже build</td>
+              </tr>
+              <tr>
+                <td><b>Do nothing</b></td>
+                <td>0 ₽</td>
+                <td>—</td>
+                <td>—</td>
+                <td>Сохраняет позиции, без роста</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="sub-section">Что сделал лично</h4>
+        <ol class="list">
+          <li>Через личный контакт <b>вышел на CEO «Даркстор у дома» Кирилла Чеканова</b> и получил предварительное согласие на пилот до встречи с FM.</li>
+          <li>Построил финансовую модель: unit-экономика express-заказа 565 ₽, точка безубыточности — месяц 6, ROI пилота 1,4× за 8 мес.</li>
+          <li>Прописал KPI-гейты на 7 операционных метриках с порогами GO / PIVOT / STOP.</li>
+        </ol>
+
+        <h4 class="sub-section">Результат</h4>
+        <div class="panel panel--accent">
+          <p>
+            Проект прошёл в финал конкурса FM Logistic, защита впереди. Это <b>ещё не закрытая сделка</b> — но это сильный продуктовый результат до стадии защиты: партнёр найден и предварительно согласен на пилот, unit-экономика собрана, KPI-гейты прописаны. Дальше — подтверждение от FM Logistic.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 1.3 Кейс провала                                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b1-failure" data-slide-title="1.3 Провал">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">1.3 / Кейс провала</div></div>
+        <h2>Quest by Spiritual Data</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Зима 2024–2025. На хакатоне командой из 4 человек собрали MVP сервиса для бросания курения. Чтобы не оставлять проект просто так, я вышел на американский Quest с предложением форка под смежный сценарий — отказ от зависимостей. Связался, договорился о созвоне, рассказал о нас и о идее, но получил отказ: <b>они уже сами строили этот сценарий, просто публично не выкатили</b>. Предложили мягкий вариант — использовать их API без форка — но это убирало главный смысл проекта (ownership и международная экспансия), мы становились внешним экспериментом на чужой платформе.
+        </p>
+
+        <h4 class="sub-section">Главная ошибка</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Я пришёл к партнёру с готовой <b>жёсткой формой сотрудничества</b> (форк + ownership + международная экспансия) до того, как проверил, нужна ли им именно эта форма. Понял на самом созвоне, когда они спокойно сказали «у нас уже есть наработки».
+        </p>
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          <b>Цена ошибки:</b> я не оставил себе пространства для торга — у Quest на руках был мягкий вариант (API-доступ), который мы могли бы переосмыслить и вытащить из него ценность, если бы пришли с открытой повесткой. Вместо этого я сжёг шанс на гибкий формат, потому что вся презентация была построена вокруг одной конструкции, и переключаться на ходу было поздно.
+        </p>
+
+        <h4 class="sub-section">Что изменил — три проверки до питча</h4>
+        <ol class="list">
+          <li><b>Вакансии и публичные апдейты партнёра за 6 месяцев</b> — если он сам строит мою вертикаль, предложение «мы сделаем за вас» обесценивается.</li>
+          <li><b>Самостоятельная ценность</b> — что у нас остаётся при отказе.</li>
+          <li><b>Независимая валидация за 1–2 недели</b>, чтобы переговорная позиция была «у нас уже есть пользователи в вашем сегменте», а не «дайте нам канал».</li>
+        </ol>
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          В FM Logistic применил: первый шаг был именно <b>самостоятельная проверка экономики, потом контакт с партнёром</b>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 1.4 Метрика обманула                                      -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b1-metric" data-slide-title="1.4 Метрика обманула">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">1.4 / Метрика обманула</div></div>
+        <h2>HSTU в Яндексе</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Стажировка в Яндексе, рекомендательные системы. В этот момент выходит хайповая статья от Meta — <i>«Actions Speak Louder than Words»</i> — про новую архитектуру <b>HSTU</b> для sequential recommendations с большими приростами офлайн-метрик на их данных. Мне ставят задачу: применить подход на нашем стеке, проверить, повторяются ли приросты на наших данных, и если да — продвигать в продакшн.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          Я воспроизвёл подход, обучил модель. Офлайн-метрики (NDCG, hit rate) выросли — и у HSTU, и у альтернативных архитектур. Выглядело как доказанный результат. Но насторожил <b>слишком равномерный рост у разных архитектур</b> — обычно такой эффект так не работает. Стал копать и нашёл комментарий команды МТС: препроцессинг timeline вместе с positional embedding создаёт утечку данных из будущего — события из «будущего» попадают в контекст текущего пользователя.
+        </p>
+
+        <div class="callout">
+          <h4>Вывод</h4>
+          <p>
+            Модель <b>не научилась лучше рекомендовать</b>. Она научилась использовать данные, которых в продакшне у неё не будет. Офлайн-метрика оторвалась от продуктовой реальности.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- BLOCK 2 DIVIDER                                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="block-divider-section slide" id="block-2" data-slide-title="Блок 2">
+      <div class="block-divider__inner">
+        <div class="block-divider__num">02</div>
+        <div class="block-divider__label">Блок 2</div>
+        <h2 class="block-divider__title">Продуктовое мышление</h2>
+        <p class="block-divider__lead">
+          Разбор UX чата поддержки Т-Банка (3 проблемы, главный фокус — «Отмена» уходит в fallback на оператора). Top — Duolingo: streak + лиги, soft streak как защита от анти-паттерна.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 2.1 UX-разбор                                             -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b2-ux" data-slide-title="2.1 UX чата">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">2.1 / Разбор UX/UI чата поддержки Т-Банка</div></div>
+        <h2>Три проблемы и главный фокус</h2>
+
+        <h4 class="sub-section">Скриншоты из реальной сессии</h4>
+        <p class="muted">Скриншоты внутри настоящих рамок телефона — прокручиваются внутри экрана, чтобы видеть всю сессию целиком.</p>
+        <div class="screenshots-row">
+          <div>
+            <div class="phone-screenshot" aria-label="Скриншот 1 — полная сессия с ботом и оператором">
+              <div class="phone-screenshot__screen">
+                <div class="phone-screenshot__notch"></div>
+                <div class="phone-screenshot__scroll" tabindex="0">
+                  <img src="./screenshots/photo_5449483518128887383_y.jpg" alt="Полная сессия: бот → отмена → оператор → cross-sell">
+                </div>
+                <div class="phone-screenshot__home"></div>
+                <div class="phone-screenshot__hint">↕ скролл</div>
+              </div>
+            </div>
+            <div class="phone-caption">
+              <span class="phone-caption__title">Скриншот 1 · Полная сессия</span>
+              Сценарий «Перевыпустить карту»: бот предлагает обновить данные «в приложении» → текст «Отмена» → <b>молчаливое переключение на оператора</b> → диалог с оператором Львом → закрытие → cross-sell Платинум. Прокрутите вниз, чтобы увидеть весь поток.
+            </div>
+          </div>
+
+          <div>
+            <div class="phone-screenshot" aria-label="Скриншот 2 — Главная → Чат, меню быстрых действий">
+              <div class="phone-screenshot__screen">
+                <div class="phone-screenshot__notch"></div>
+                <div class="phone-screenshot__scroll" tabindex="0">
+                  <img src="./screenshots/photo_5449483518128887384_y.jpg" alt="Главная → Чат — quick action menu">
+                </div>
+                <div class="phone-screenshot__home"></div>
+                <div class="phone-screenshot__hint">↕ скролл</div>
+              </div>
+            </div>
+            <div class="phone-caption">
+              <span class="phone-caption__title">Скриншот 2 · Главная → Чат</span>
+              Меню «О чём хотите спросить?»: featured-карточка «Перевыпустить карту — на основе ваших действий» + список сервисов разной важности (от «Установить приложение» до «Заказать стикер T-Pay»). Стартовая точка сессии.
+            </div>
+          </div>
+        </div>
+
+        <h4 class="sub-section">Проблема 1 — слово «отмена» в чате уходит в fallback на оператора <span class="badge" style="background:var(--yellow);color:var(--ink);">Главный фокус</span></h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          В сценарии «Перевыпустить карту» бот предложил обновить данные в приложении. Я текстом написал <b>«Отмена»</b>, ожидая выйти из шага или вернуться назад — система ответила <b>«Переключаем ваш диалог на сотрудника»</b>. У бота просто нет распознавания команды «отмена / назад» внутри сценария: любой ввод вне ожидаемых слотов агент не понимает, и fallback закрывается через эскалацию.
+        </p>
+
+        <h4 class="sub-section">Проблема 2 — нет явного «Назад» внутри сценария</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          На этапе выбора причины перевыпуска нет кнопки «Назад» или «Вернуться в меню». Если пользователь нажал не туда или передумал — единственный визуальный выход это эскалация. В одних сценариях inline-кнопки есть, в других — нет; это баг между старым и новым UX-слоями.
+        </p>
+
+        <h4 class="sub-section">Проблема 3 — инструкция без deep-link в нужный экран</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Бот пишет «обновите информацию о себе в приложении» с подчёркнутой ссылкой, но при тапе на неё ничего не происходит. Пользователь сам ищет раздел в приложении, ошибается, возвращается в чат — и снова попадает в тот же сценарий с теми же кнопками.
+        </p>
+
+        <h4 class="sub-section">Почему «Отмена» — главный фокус</h4>
+        <div class="callout">
+          <p>
+            Это <b>самый частый источник ложных эскалаций</b> и при этом <b>дешёвый фикс на стороне агента</b> — добавить распознавание команды «отмена / назад / вернуться» и обработку до fallback'а.
+          </p>
+          <p style="margin-top:10px;">
+            Проблема 2 решается тем же редизайном попутно. Проблема 3 (deep-link) требует интеграции с экранами приложения и более длинного цикла. <b>«Отмена» проверяема за один спринт, эффект виден сразу.</b>
+          </p>
+        </div>
+
+        <h4 class="sub-section">Сколько это стоит сейчас</h4>
+        <p style="color:var(--text2);font-size:14.5px;line-height:1.65;">
+          Часть случаев в категориях «хочет закончить диалог» (0,4%) и «зовёт оператора в середине сценария» (0,8%) — это, по моей оценке, нераспознанные команды вроде «отмена / назад». Беру консервативно <b>~0,6% всех чатов</b>:
+        </p>
+
+        <div class="big-stats">
+          <div class="big-stats__cell">
+            <div class="big-stats__value">7,2 тыс.</div>
+            <div class="big-stats__label">Ложных эскалаций / мес</div>
+          </div>
+          <div class="big-stats__cell">
+            <div class="big-stats__value">86 тыс.</div>
+            <div class="big-stats__label">Ложных эскалаций / год</div>
+          </div>
+          <div class="big-stats__cell">
+            <div class="big-stats__value">~52 ₽</div>
+            <div class="big-stats__label">ФОТ-стоимость 1 эскалации (допущение)</div>
+          </div>
+          <div class="big-stats__cell">
+            <div class="big-stats__value">~4,5 млн ₽</div>
+            <div class="big-stats__label">Прямой ущерб / год</div>
+          </div>
+        </div>
+
+        <p style="color:var(--text2);font-size:13.5px;line-height:1.65;margin-top:14px;">
+          <b>52 ₽</b> — допущение по ФОТ-стоимости одной эскалации (4 минуты × ~13 ₽/мин операторо-времени, индустриальный бенчмарк банковского контакт-центра). Точное число у Т-Банка может отличаться. <b>Главное здесь не сама экономия в 4,5 млн</b>, а то что текущие 70% переводов на оператора содержат часть случайных и UX-спровоцированных эскалаций — поэтому потенциал автоматизации занижен.
+        </p>
+
+        <h4 class="sub-section">Решение в два слоя</h4>
+        <div class="cards cards--2">
+          <div class="card card--feature">
+            <div class="card__icon">⚙️</div>
+            <h3>Слой 1 — на стороне агента</h3>
+            <p>В каждом сценарии после регистратора шага добавить распознавание команды <b>«отмена / назад / отменить / вернуться»</b> как возврат на предыдущий шаг сценария, а не fallback. Все агенты уже понимают команду «оператор» в тексте — нужно расширить тот же механизм на «отмена / назад» и обрабатывать его до логики выхода. <b>«Назад» и «Отмена» становятся нативным шагом сценария</b>, без нужды в отдельных кнопках под каждым ответом бота.</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">🖱️</div>
+            <h3>Слой 2 — единственное UI-добавление</h3>
+            <p><b>Кнопка «Отменить вызов оператора»</b> в окне ожидания, пока не пришло первое сообщение сотрудника. У пользователя есть несколько секунд, чтобы успеть подкликнуть, если эскалация случилась по ошибке. Также нужен новый код причины <code>accidental_operator_call</code> («случайный вызов оператора»), так как это новая категория сценария.</p>
+          </div>
+        </div>
+
+        <h4 class="sub-section">Вайб-мокап решения <span class="badge">бонус задания</span></h4>
+        <div class="vibe-mockup-row">
+          <div>
+            <div class="vibe-mockup-label vibe-mockup-label--before">— Сейчас</div>
+            <div class="vibe-phone">
+              <div class="vibe-phone__header">
+                <div class="vibe-phone__avatar">Т</div>
+                <div>
+                  <div class="vibe-phone__title">Поддержка</div>
+                  <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                </div>
+              </div>
+              <div class="vibe-phone__body">
+                <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: сделать это можно в приложении.</div>
+                <div class="vibe-msg vibe-msg--user">Отмена</div>
+                <div class="vibe-msg vibe-msg--system">Переключаем ваш диалог на сотрудника…</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="vibe-mockup-label vibe-mockup-label--after">→ Стало</div>
+            <div class="vibe-phone">
+              <div class="vibe-phone__header">
+                <div class="vibe-phone__avatar">Т</div>
+                <div>
+                  <div class="vibe-phone__title">Поддержка</div>
+                  <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                </div>
+              </div>
+              <div class="vibe-phone__body">
+                <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: <a href="#">открыть в приложении →</a></div>
+                <div class="vibe-msg vibe-msg--user">Отмена</div>
+                <div class="vibe-msg vibe-msg--bot">Возвращаю на шаг «Выбрать причину». Если что-то ещё — напишите.</div>
+                <div class="vibe-extra">
+                  <b>+</b> агент распознаёт «отмена», «назад», «вернуться» в тексте<br>
+                  <b>+</b> если оператор всё-таки вызван — кнопка «Отменить вызов оператора» в окне ожидания
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="sub-section">На какие метрики повлияет</h4>
+        <p style="color:var(--text2);font-size:14.5px;line-height:1.65;">
+          <b>Автоматизация растёт не за счёт удержания клиента в боте</b>, а за счёт устранения UX-ошибок: часть переводов на оператора сейчас возникает не из-за реальной потребности в сотруднике, а из-за нераспознанных команд вроде «отмена / назад».
+        </p>
+        <ul class="list" style="margin-top:14px;">
+          <li><b>Автоматизация +0,5–0,6 п.п.</b></li>
+          <li><b>CSAT сценария не должен снизиться.</b></li>
+          <li>Дополнительно можно ввести <b>cancel-rate</b> — долю пользователей, которые успели отменить ошибочный вызов оператора до подключения сотрудника.</li>
+          <li>При этом <b>доступность оператора</b> для реальных запросов не должна ухудшиться: если клиент явно просит человека, он должен получить оператора в разумное время.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 2.2 Top of the Top — Duolingo                             -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b2-duolingo" data-slide-title="2.2 Duolingo">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">2.2 / Top of the Top</div></div>
+        <h2>Duolingo</h2>
+
+        <h4 class="sub-section">Что сделано хорошо</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Duolingo превратил повторяемое действие в привычку через ясный прогресс и мягкое социальное давление. Самая сильная механика — <b>streak + лиги</b>. Streak создаёт личную ставку (loss aversion: чем дольше серия, тем больнее терять; Streak Freeze монетизируется через подписку). Лиги добавляют социальное давление без графа друзей: ты автоматически попадаешь в группу из ~30 анонимов твоего уровня, нижние вылетают.
+        </p>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;margin-top:12px;">
+          По публичной отчётности компании <b>DAU/MAU держится на уровне ~35%</b> — для приложения для обучения это аномально высокий показатель.
+        </p>
+
+        <h4 class="sub-section">Почему это работает</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Две силы складываются <b>мультипликативно</b>: страх потерять стрик на глазах у лиги — качественно другая интенсивность, чем по отдельности. Обе механики самовоспроизводимые. <b>Важно для PM:</b> работает на нулевом графе данных — старт с первой сессии, большинству retention-механик в финтехе нужна поведенческая история.
+        </p>
+
+        <h4 class="sub-section">Что улучшил бы</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Та же сила превратилась в анти-паттерн: часть пользователей пишет в коммьюнити, что streak воспринимается как принуждение, а не как помощь. Я бы ввёл <b>soft streak как опцию: «5 активных дней из 7 = стрик сохраняется»</b>. Гипотеза для A/B: long-term retention (12 месяцев) у когорты с soft-стриком +2–4 п.п.
+        </p>
+
+        <div class="callout">
+          <h4>Урок для финтеха</h4>
+          <p>
+            Duolingo силён <b>не streak'ом сам по себе</b>, а тем, что превращает повторяемое действие в привычку через понятный прогресс и мягкое социальное давление. В банковских механиках лояльности (кэшбек-категории, статусы, миссии) ту же логику можно применять осторожно — без ощущения принуждения, чтобы пользователь воспринимал прогресс как помощь, а не как дедлайн.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- BLOCK 3 DIVIDER                                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="block-divider-section slide" id="block-3" data-slide-title="Блок 3">
+      <div class="block-divider__inner">
+        <div class="block-divider__num">03</div>
+        <div class="block-divider__label">Блок 3</div>
+        <h2 class="block-divider__title">План достижения 60% автоматизации</h2>
+        <p class="block-divider__lead">
+          24 месяца, четыре волны: данные → пробелы сценариев → контекст и формулировки → масштабирование. Цель: 60% качественной автоматизации без ухудшения клиентского опыта.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.1 Цель и принцип                                        -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-goal" data-slide-title="3.1 Цель и принцип">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.1 / Цель и принцип плана</div></div>
+        <h2>Цель и принцип</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Бизнес-цель — увеличить автоматизацию чат-бота с <b>30% до 60% за 24 месяца</b>, сохранив качество клиентского опыта. Я считаю успехом не формальное удержание клиента в боте, а <b>реально решённое обращение</b>: бот помог без оператора, и клиент не вернулся с той же темой в течение 7 дней.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          Сейчас бот решает около <b>360 тыс. чатов в месяц</b>, а на оператора уходит около <b>840 тыс.</b> Чтобы выйти на 60%, нужно, чтобы бот качественно решал ещё около <b>360 тыс. чатов в месяц</b>.
+        </p>
+
+        <h4 class="sub-section">Иллюстрация риска через CSAT</h4>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th>Состояние</th><th>Расчёт</th><th>Средневзвешенный CSAT</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Сейчас</td><td>0,30 × 3,2 + 0,70 × 4,1</td><td><b>≈ 3,83</b></td></tr>
+              <tr style="background:rgba(229,56,79,0.06);"><td>60% без улучшения качества</td><td>0,60 × 3,2 + 0,40 × 4,1</td><td><b>≈ 3,56</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <p>
+            Это не точный прогноз, а <b>проверка логики</b>: 60% автоматизации нельзя достигать через ухудшение клиентского опыта. Поэтому план строится в двух параллельных треках: <b>расширение покрытия типовых сценариев</b> и <b>повышение качества решений</b>.
+          </p>
+        </div>
+
+        <h4 class="sub-section">Фокус плана — четыре типа задач</h4>
+        <div class="cards cards--2">
+          <div class="card card--feature">
+            <div class="card__icon">🕳️</div>
+            <h3>Где нет видимости</h3>
+            <p><b>22,7% переводов не классифицированы</b>, поэтому сначала нужно понять, что внутри этой категории.</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">🎯</div>
+            <h3>Где есть понятный сценарный пробел</h3>
+            <p>Если у бота нет ветки, ответа или известного намерения, это <b>самый прямой источник роста автоматизации</b>.</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">💬</div>
+            <h3>Где бот близок к решению, но теряет качество диалога</h3>
+            <p>Это контекст, follow-up, повтор вопроса, непонятая формулировка, слоты и несколько сообщений.</p>
+          </div>
+          <div class="card card--feature">
+            <div class="card__icon">⚠️</div>
+            <h3>Где риск выше потенциального выигрыша</h3>
+            <p><b>Отключённые сегменты</b>, особенно VIP и должники, нельзя использовать как быстрый источник роста без отдельной проверки, потому что цена ошибки там выше.</p>
+          </div>
+        </div>
+
+        <div class="panel panel--accent" style="margin-top:18px;">
+          <p>
+            <b>Логика плана:</b> сначала убрать слепую зону и дешёвые искажения в данных, затем закрыть самые понятные сценарные пробелы, потом улучшать качество диалога и только после этого аккуратно заходить в сегменты с повышенным риском.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.2 Группировка причин                                    -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-clusters" data-slide-title="3.2 Группировка">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.2 / Как я группирую причины переводов</div></div>
+        <h2>Продуктовые кластеры</h2>
+
+        <p class="muted">
+          Чтобы не строить план по 25 разрозненным строкам, я сначала объединяю причины переводов в продуктовые кластеры. Это показывает, где есть понятная механика решения, а где сначала нужна диагностика.
+        </p>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:30%">Кластер</th><th>Из чего складывается</th><th style="width:10%">Сумма</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(255,221,45,0.08);">
+                <td><b>Неклассифицированные причины</b></td>
+                <td>Неклассифицированные причины перевода 22,7%</td>
+                <td><b>22,7%</b></td>
+              </tr>
+              <tr>
+                <td><b>Отключённые сегменты</b></td>
+                <td>Бот отключён для сегмента: VIP / гость / должник 9,6%</td>
+                <td>9,6%</td>
+              </tr>
+              <tr>
+                <td><b>Пробелы сценариев / покрытия</b></td>
+                <td>Не хватает ветки сценария 6,7% + интент распознан, но ответа нет 3,3% + бот не знает намерения 3,1%</td>
+                <td>13,1%</td>
+              </tr>
+              <tr>
+                <td><b>Контекст и follow-up</b></td>
+                <td>Продолжение предыдущего диалога / контекст потерян 5,4% + клиент спрашивает в тему ответа 2,3% + клиент повторяет вопрос после ответа бота 1,4%</td>
+                <td>9,1%</td>
+              </tr>
+              <tr>
+                <td><b>Распознавание формулировок / маршрутизация</b></td>
+                <td>Интент есть, но не поняли формулировку 1,7% + клиент выразился слишком общо 1,0% + ошибка классификации интента 0,9% + выражает намерение в нескольких сообщениях 0,4% + несколько вопросов в одном сообщении 0,2% + другое: бот не понял 0,3%</td>
+                <td>4,5%</td>
+              </tr>
+              <tr>
+                <td><b>Парсинг ответа клиента / слоты</b></td>
+                <td>Бот не смог распарсить ответ клиента 1,3%</td>
+                <td>1,3%</td>
+              </tr>
+              <tr>
+                <td><b>Клиент зовёт оператора</b></td>
+                <td>Клиент сразу зовёт оператора 3,0% + зовёт оператора после ответа бота 1,1% + зовёт оператора в середине сценария 0,8%</td>
+                <td>4,9%</td>
+              </tr>
+              <tr>
+                <td><b>Технические ошибки и качество ответа</b></td>
+                <td>Техническая ошибка бота 2,6% + неперсонализированный/общий ответ 0,3% + другое: бот понял, но не решил 0,2% + бот дал неверный ответ 0,1%</td>
+                <td>3,2%</td>
+              </tr>
+              <tr>
+                <td><b>Мультимодальность</b></td>
+                <td>Клиент отправил только картинку/файл 0,8% + отвечает картинкой внутри сценария 0,4%</td>
+                <td>1,2%</td>
+              </tr>
+              <tr>
+                <td><b>Завершение диалога</b></td>
+                <td>Хочет закончить диалог 0,4%</td>
+                <td>0,4%</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr><td colspan="2"><b>Итого переводов на оператора</b></td><td><b>70,0%</b></td></tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <h4 class="sub-section">Как я перехожу от данных к плану</h4>
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Логика построения roadmap такая: сначала я группирую причины переводов в кластеры, затем считаю размер каждого кластера, после этого оцениваю, какую долю кластера можно реалистично закрыть без ухудшения CSAT и роста повторных обращений. Поэтому ожидаемый вклад инициатив считается не «сверху», а по формуле:
+        </p>
+
+        <div class="eq-block">
+          ожидаемый вклад = размер кластера × реалистичная доля закрытия
+        </div>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+          Дальше приоритизирую инициативы по четырём критериям: <b>размер проблемы, понятность механики решения, риск для клиента и нагрузка на команду</b>. Поэтому сначала идут неизвестные причины и самые понятные сценарные пробелы, а более рискованные зоны — отключённые сегменты, VIP, генеративные ответы и память между сессиями — не попадают в основной источник роста без отдельной проверки.
+        </p>
+
+        <div class="callout" style="margin-top:14px;">
+          <h4>Главный вывод</h4>
+          <p>
+            Самый большой блок — <b>22,7% неизвестных причин</b>. Пока он не разобран, нельзя честно сказать, какие инициативы доведут нас до 60%. Из известных кластеров самые понятные источники роста — пробелы сценариев, контекст/follow-up, распознавание формулировок и техническая стабильность.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.3 Короткий план действий — 4 волны                      -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-waves" data-slide-title="3.3 Четыре волны">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.3 / Короткий план действий</div></div>
+        <h2>Четыре волны на 24 месяца</h2>
+
+        <div class="wave-card">
+          <div class="wave-card__head">
+            <div class="wave-card__num">Волна 1</div>
+            <div class="wave-card__period">М1–М3</div>
+            <div style="font-weight:600;color:var(--text2);">Данные, разметка и быстрые безопасные фиксы</div>
+          </div>
+          <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+            Разбираю <b>22,7% неизвестных переводов</b>, уточняю причины эскалаций, отдельно проверяю вызовы оператора как возможную UX-проблему из Блока 2, исправляю самые частые технические ошибки.
+          </p>
+        </div>
+
+        <div class="wave-card">
+          <div class="wave-card__head">
+            <div class="wave-card__num">Волна 2</div>
+            <div class="wave-card__period">М4–М9</div>
+            <div style="font-weight:600;color:var(--text2);">Доработка сценариев по самым частым пробелам</div>
+          </div>
+          <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+            Беру ситуации, где боту не хватает ветки, ответа или понятного следующего шага. Новые ветки сначала проверяются в тестовом режиме, затем постепенно раскатываются на <b>10%, 25%, 50% и 100% трафика</b>.
+          </p>
+        </div>
+
+        <div class="wave-card">
+          <div class="wave-card__head">
+            <div class="wave-card__num">Волна 3</div>
+            <div class="wave-card__period">М7–М12</div>
+            <div style="font-weight:600;color:var(--text2);">Контекст, follow-up и распознавание формулировок</div>
+          </div>
+          <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+            Работаю с теми случаями, где бот не обязательно «не знает ответ», а теряет качество диалога: не понимает уточнение, повторный вопрос, несколько сообщений, общий запрос или слот. Сначала разбираю механику ошибки, затем применяю точечные решения: уточняющие вопросы, улучшение классификации интентов, обработку нескольких сообщений, доработку парсинга слотов. <b>ML/LLM-инструменты — только как следующий шаг, если простые методы не дают качества.</b>
+          </p>
+        </div>
+
+        <div class="wave-card">
+          <div class="wave-card__head">
+            <div class="wave-card__num">Волна 4</div>
+            <div class="wave-card__period">М13–М24</div>
+            <div style="font-weight:600;color:var(--text2);">Масштабирование подтверждённых решений</div>
+          </div>
+          <p style="color:var(--text2);font-size:15px;line-height:1.65;">
+            Во втором году беру новые массовые причины из реклассифицированных <b>22,7%</b>. Отключённые сегменты сначала разбираю на VIP / гость / должник. <b>Guest FAQ возможен только если внутри 9,6% есть значимая доля безопасных гостевых вопросов. VIP не закладываю как источник роста до 60%.</b>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.4 Roadmap, вклад и обоснование                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-roadmap" data-slide-title="3.4 Roadmap">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.4 / Roadmap, вклад и обоснование</div></div>
+        <h2>Инициативы и ожидаемый вклад</h2>
+
+        <div class="eq-block">
+          1 п.п. автоматизации = ~12 тыс. чатов в месяц
+          <span class="eq-block__caption">Все цифры ниже — плановые допущения, а не обещание. После Q1 они пересчитываются по фактической структуре неизвестных причин.</span>
+        </div>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:8%">Период</th><th style="width:18%">Инициатива</th><th>Что делаю</th><th style="width:14%">Команда</th><th style="width:10%">Вклад</th><th>Почему такой вклад</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>М1–М3</b></td>
+                <td><b>Реклассификация 22,7%</b></td>
+                <td>Разбираю неизвестные причины переводов: выборка, кластеризация, ручная проверка, новая карта причин.</td>
+                <td>1 ML, аналитик, 1 dev частично</td>
+                <td><b>0–1 п.п.</b></td>
+                <td>Сама разметка почти не автоматизирует чаты. Её задача — открыть резерв года 2; этот вклад считаю отдельно в строке новых сценариев из 22,7%.</td>
+              </tr>
+              <tr>
+                <td><b>М1–М2</b></td>
+                <td><b>UX-выход из сценария</b></td>
+                <td>Проверяю, какая часть «оператор в середине сценария / хочет закончить диалог» связана с «отмена / назад».</td>
+                <td>1 dev, дизайнер частично, аналитик</td>
+                <td><b>до +0,5–0,8 п.п.</b></td>
+                <td>Прямой пул: 0,8% + 0,4% = 1,2%. Не весь он UX-ошибка, поэтому беру только подтверждённую часть: 1,2% × 40–65% ≈ 0,5–0,8 п.п.</td>
+              </tr>
+              <tr>
+                <td><b>М1–М12</b></td>
+                <td><b>Техническая стабильность</b></td>
+                <td>Чиню техошибки, неверные и слишком общие ответы, падения сценариев.</td>
+                <td>1 dev фоном</td>
+                <td><b>+0,5–1,5 п.п.</b></td>
+                <td>Пул техошибок и плохих ответов — около 3,2%. Быстро закрыть всё нельзя: 3,2% × 15–45% ≈ 0,5–1,5 п.п. Слот-парсинг считаю отдельно.</td>
+              </tr>
+              <tr style="background:rgba(255,221,45,0.06);">
+                <td><b>М4–М9</b></td>
+                <td><b>Пробелы сценариев</b></td>
+                <td>Дорабатываю ветки по причинам: нет сценария, нет ответа, бот не знает намерение.</td>
+                <td>3–4 dev, аналитик, дизайнер частично</td>
+                <td><b>+5–6,5 п.п.</b></td>
+                <td>Размер кластера — 13,1%. Это самый прямой кластер: если закрыть 40–50% пробелов, получаем 13,1% × 40–50% ≈ 5–6,5 п.п.</td>
+              </tr>
+              <tr>
+                <td><b>М7–М12</b></td>
+                <td><b>Контекст и follow-up</b></td>
+                <td>Проверяю, где именно теряется контекст, и дорабатываю сценарии уточнений.</td>
+                <td>1–2 dev, ML частично</td>
+                <td><b>+2,7–3,6 п.п.</b></td>
+                <td>Размер кластера — 9,1%. Он сложнее сценарных пробелов, поэтому доля закрытия ниже: 9,1% × 30–40% ≈ 2,7–3,6 п.п.</td>
+              </tr>
+              <tr>
+                <td><b>М9–М12</b></td>
+                <td><b>Формулировки, слоты и маршрутизация</b></td>
+                <td>Улучшаю интенты, обработку нескольких сообщений, уточняющие вопросы и парсинг слотов.</td>
+                <td>1 ML, 1 dev</td>
+                <td><b>+1,5–2,3 п.п.</b></td>
+                <td>Пул: 4,5% формулировок/маршрутизации + 1,3% слотов = 5,8%. Кластер смешанный, поэтому закрываю не весь: 5,8% × 25–40% ≈ 1,5–2,3 п.п.</td>
+              </tr>
+              <tr>
+                <td><b>М9–М15</b></td>
+                <td><b>Клиент зовёт оператора: мягкий pre-triage</b></td>
+                <td>Не блокирую оператора: перед переводом предлагаю быстрый проверенный сценарий. Если клиент снова просит человека — перевожу.</td>
+                <td>1 dev, дизайнер, аналитик</td>
+                <td><b>+0,7–1,5 п.п.</b></td>
+                <td>Пул «клиент зовёт оператора» — 4,9%. Не весь пул автоматизируем: если 15–30% выберут быстрый сценарий до перевода, вклад будет 4,9% × 15–30% ≈ 0,7–1,5 п.п.</td>
+              </tr>
+              <tr style="background:rgba(255,221,45,0.06);">
+                <td><b>М13–М21</b></td>
+                <td><b>Новые сценарии из 22,7%</b></td>
+                <td>Беру подтверждённые массовые причины из реклассификации и добавляю в roadmap сценариев.</td>
+                <td>3–4 dev, аналитик, ML частично</td>
+                <td><b>+7–9 п.п.</b></td>
+                <td>Это <b>главный резерв года 2</b>. Если внутри 22,7% найдутся массовые безопасные coverage/context-кейсы и удастся закрыть 30–40% кластера: 22,7% × 30–40% ≈ 6,8–9,1 п.п.</td>
+              </tr>
+              <tr>
+                <td><b>М16–М24</b></td>
+                <td><b>Отключённые сегменты: безопасная часть</b></td>
+                <td>Сначала разбиваю 9,6% на VIP / гость / должник. Автоматизирую только безопасные guest FAQ, если их доля значима.</td>
+                <td>1–2 dev, дизайнер, legal</td>
+                <td><b>+1–3 п.п.</b></td>
+                <td>В данных нет разбивки внутри 9,6%, поэтому это upside после проверки. Если значимая часть окажется гостевыми FAQ без авторизации, можно получить прирост; VIP/должников не автоматизирую агрессивно.</td>
+              </tr>
+              <tr>
+                <td><b>М22–М24</b></td>
+                <td><b>VIP opt-in пилот</b></td>
+                <td>Только малый пилот на проверенных сценариях. <b>Не источник достижения 60%.</b></td>
+                <td>1 dev, аналитик</td>
+                <td>не закладываю</td>
+                <td>VIP — 8% базы и 35% выручки. Это аргумент осторожности, а не источник роста.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4 class="sub-section">Промежуточные ориентиры</h4>
+        <div class="checkpoints">
+          <div class="checkpoint">
+            <div class="checkpoint__when">М3</div>
+            <div class="checkpoint__value">31–32%</div>
+          </div>
+          <div class="checkpoint">
+            <div class="checkpoint__when">М6</div>
+            <div class="checkpoint__value">34–36%</div>
+          </div>
+          <div class="checkpoint">
+            <div class="checkpoint__when">М9</div>
+            <div class="checkpoint__value">37–41%</div>
+          </div>
+          <div class="checkpoint">
+            <div class="checkpoint__when">М12</div>
+            <div class="checkpoint__value">40–46%</div>
+          </div>
+          <div class="checkpoint">
+            <div class="checkpoint__when">М18</div>
+            <div class="checkpoint__value">49–55%</div>
+          </div>
+          <div class="checkpoint">
+            <div class="checkpoint__when">М24</div>
+            <div class="checkpoint__value">60%</div>
+          </div>
+        </div>
+        <p style="color:var(--text3);font-size:13px;margin-top:10px;">
+          М24: 60% в target-сценарии, если Q1 подтверждает крупную безопасную часть внутри 22,7%.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.5 Основные гипотезы                                     -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-hypotheses" data-slide-title="3.5 Гипотезы">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.5 / Основные гипотезы</div></div>
+        <h2>Гипотезы, лежащие в основе плана</h2>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:24%">Гипотеза</th><th style="width:24%">Почему следует из данных</th><th>Как проверяю</th><th style="width:18%">Решение</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(255,221,45,0.06);">
+                <td><b>В 22,7% неизвестных причин есть автоматизируемые категории</b></td>
+                <td>Это самая большая категория переводов</td>
+                <td>Реклассификация выборки, ручная проверка, группировка по причинам</td>
+                <td><b>Делать в Q1 обязательно</b></td>
+              </tr>
+              <tr>
+                <td><b>Пробелы сценариев дадут основной прирост года 1</b></td>
+                <td>Пул 13,1%: нет ветки, нет ответа, бот не знает намерение</td>
+                <td>Беру топ-темы, делаю ветки, раскатываю постепенно</td>
+                <td>Главный фокус М4–М9</td>
+              </tr>
+              <tr>
+                <td><b>Контекст и follow-up можно частично автоматизировать</b></td>
+                <td>Пул 9,1%: потерян контекст, уточнения, повтор вопроса</td>
+                <td>Сначала выясняю механику: потеря контекста, неполный ответ или плохой переход</td>
+                <td>Запускать после первых сценарных доработок</td>
+              </tr>
+              <tr>
+                <td><b>Проблемы формулировок и слотов можно снизить улучшением маршрутизации</b></td>
+                <td>Пул около 5,8%: формулировки, общий запрос, ошибка интента, несколько сообщений, слоты</td>
+                <td>Сначала правила, интент-классификация, уточнения, слоты; ML/LLM — второй шаг</td>
+                <td>Запускать после того, как есть рабочие сценарии</td>
+              </tr>
+              <tr>
+                <td><b>Технические ошибки нужно чинить фоном</b></td>
+                <td>Около 3,2% чатов связаны с техошибками и плохими ответами</td>
+                <td>Еженедельный разбор топовых падений и неверных ответов</td>
+                <td>Не главный рост, но защита CSAT</td>
+              </tr>
+              <tr>
+                <td><b>UX-спровоцированные вызовы оператора возможны, но требуют проверки</b></td>
+                <td>В Блоке 2 найден кейс «отмена → оператор»; в данных есть «зовёт оператора в середине» и «хочет закончить диалог»</td>
+                <td>Смотрю логи перед вызовом оператора: текст, шаг сценария, команды «назад / отмена»</td>
+                <td>Быстрый тест в Q1; вклад не считаю гарантированным</td>
+              </tr>
+              <tr>
+                <td><b>Отключённые сегменты нельзя автоматизировать одной логикой</b></td>
+                <td>В данных 9,6%, но без разбивки на VIP / гость / должник</td>
+                <td>Сначала разбиваю сегмент и считаю безопасную долю</td>
+                <td>Guest FAQ — только после подтверждения; VIP не в основной вклад</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.6 Backlog-гипотезы                                      -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-backlog" data-slide-title="3.6 Backlog">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.6 / Backlog-гипотезы</div></div>
+        <h2>Что сознательно не входит в основной план</h2>
+
+        <p class="muted">
+          Эти гипотезы не входят в базовый путь к 60%, потому что основной план даёт <b>более предсказуемый вклад при меньшем риске и меньшей нагрузке на команду</b>. Но я не выбрасываю их: это backlog для discovery-задач. Если основные волны недодают вклад или появляется свободная capacity, возвращаюсь к ним и проверяю по тем же критериям: размер проблемы, риск, стоимость и ожидаемый эффект.
+        </p>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:18%">Гипотеза</th><th style="width:24%">Почему интересна</th><th style="width:14%">Эффект</th><th>Почему не сейчас</th><th style="width:18%">Кому отдать</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Мультимодальные обращения</b></td>
+                <td>В данных есть 1,2%: картинка/файл 0,8% + картинка внутри сценария 0,4%.</td>
+                <td>до +0,3–0,6 п.п.</td>
+                <td>Маленький пул, высокая сложность OCR/vision, риск ошибок на документах и скриншотах.</td>
+                <td>ML-интерн + аналитик: разметка 300–500 кейсов.</td>
+              </tr>
+              <tr>
+                <td><b>Память между сессиями</b></td>
+                <td>Может быть частью 5,4% «продолжение предыдущего диалога / контекст потерян».</td>
+                <td>до +1–2 п.п. после проверки</td>
+                <td>Не ясно, это потеря внутри сессии или между сессиями. Есть риск хранения данных и неверной персонализации.</td>
+                <td>Аналитик / junior PM: когортный анализ повторных обращений.</td>
+              </tr>
+              <tr>
+                <td><b>Полноценный генеративный бот</b></td>
+                <td>Может помочь с нестандартными вопросами, которые не закрываются сценариями.</td>
+                <td>не закладываю</td>
+                <td>В банковском контексте высокий риск уверенных неверных ответов. Сначала сценарии, маршрутизация и guardrails.</td>
+                <td>ML-интерн: анализ guardrails и ошибок на исторических кейсах.</td>
+              </tr>
+              <tr>
+                <td><b>Автоматизация должников</b></td>
+                <td>Должники входят в общий кластер 9,6% отключённых сегментов.</td>
+                <td>не закладываю</td>
+                <td>Нет разбивки внутри 9,6%. Высокий юридический и репутационный риск.</td>
+                <td>Аналитик + legal: сегментация 9,6% и карта допустимых тем.</td>
+              </tr>
+              <tr>
+                <td><b>Распознавание фрустрации клиента</b></td>
+                <td>Косвенно может проявляться перед эскалациями: «зовёт после ответа» 1,1% и «зовёт в середине сценария» 0,8%.</td>
+                <td>не прямой рост automation</td>
+                <td>В данных нет отдельной категории фрустрации. Это скорее защита CSAT, а не путь к 60%.</td>
+                <td>ML-интерн + аналитик: словарь маркеров и ручная проверка выборки.</td>
+              </tr>
+              <tr>
+                <td><b>Автоматическое резюме для оператора</b></td>
+                <td>Может снизить повторное объяснение проблемы при эскалации и улучшить опыт клиента.</td>
+                <td>не влияет напрямую</td>
+                <td>Это задача эффективности операторов, а не роста доли автоматизированных чатов. В кейсе есть время ответа, но не AHT.</td>
+                <td>Junior PM / аналитик: пилот на 1–2 сценариях эскалации.</td>
+              </tr>
+              <tr>
+                <td><b>Проактивная поддержка</b></td>
+                <td>Может заранее снижать часть обращений: статусы переводов, лимиты, комиссии, ошибки операций.</td>
+                <td>не считаю в 60%</td>
+                <td>Это снижение входящего потока, а не автоматизация текущих чатов. Отдельная продуктовая стратегия.</td>
+                <td>Product intern: discovery по топ-темам и proactive-сигналам.</td>
+              </tr>
+              <tr>
+                <td><b>Голосовой ввод с суммаризацией</b></td>
+                <td>Может помочь, если клиент не может коротко описать проблему текстом: общий запрос 1,0%, несколько сообщений 0,4%, несколько вопросов 0,2%.</td>
+                <td>не закладываю</td>
+                <td>Голос в данных не указан. Новая модальность, speech-to-text, риск ошибок суммаризации и чувствительных данных.</td>
+                <td>ML-интерн + дизайнер: прототип и анализ длинных неструктурированных сообщений.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <h4>Вывод</h4>
+          <p>
+            Эти гипотезы не плохие — они просто <b>проигрывают основному плану по соотношению вклад / риск / нагрузка</b>. В первые 12 месяцев команда фокусируется на том, что прямо следует из данных: реклассификация 22,7%, пробелы сценариев, контекст/follow-up, формулировки/слоты и техническая стабильность. Backlog использую как резерв задач для стажёров, аналитиков и junior PM, чтобы они готовили доказательную базу, не отвлекая основную команду от roadmap.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.7 Почему такие приоритеты                               -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-priorities" data-slide-title="3.7 Приоритеты">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.7 / Почему такие приоритеты</div></div>
+        <h2>Логика приоритизации</h2>
+
+        <div class="eq-block">
+          приоритет = размер проблемы × ожидаемый вклад × уверенность / сложность и риск
+        </div>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Поэтому сначала иду в <b>22,7% неизвестных причин</b>: без этого год 2 будет строиться вслепую. Затем — <b>пробелы сценариев</b>, потому что это самый понятный атакуемый кластер: 13,1% всех чатов. После этого — <b>контекст и формулировки</b>, потому что они работают лучше, когда уже есть сценарии, куда можно направить клиента.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          <b>Технические ошибки</b> идут фоном: они не дают главный прирост, но защищают доверие к боту. <b>UX-выход</b> проверяю быстро, потому что в Блоке 2 уже найден конкретный пример, но не закладываю большой эффект без логов. <b>Отключённые сегменты</b> не использую как быстрый источник роста, потому что в одной строке смешаны VIP, гости и должники. Без разбивки это слишком рискованно.
+        </p>
+
+        <div class="panel panel--accent" style="margin-top:14px;">
+          <p>
+            Из-за <b>ограниченной команды</b> ML-задачи не запускаются одновременно: сначала реклассификация неизвестных причин, затем улучшение маршрутизации и только после этого более сложные ML/LLM-инструменты, если они действительно нужны.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.8 Метрики и ограничения релиза                          -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-metrics" data-slide-title="3.8 Метрики">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.8 / Метрики и ограничения релиза</div></div>
+        <h2>Метрики и правило релиза</h2>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:30%">Метрика</th><th>Зачем нужна</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>CSAT бота</b></td><td>Проверяет, не покупаем ли автоматизацию ухудшением опыта</td></tr>
+              <tr><td><b>CSAT по сценарию</b></td><td>Ловит плохие сценарии, которые скрываются в среднем</td></tr>
+              <tr style="background:rgba(255,221,45,0.06);"><td><b>Repeat-contact-7d</b></td><td><b>Главный детектор формальной автоматизации</b></td></tr>
+              <tr><td><b>Repeat-contact-24h</b></td><td>Быстрый сигнал, что бот не решил вопрос</td></tr>
+              <tr><td><b>Эскалация после ответа бота</b></td><td>Показывает ответы, которые не помогают</td></tr>
+              <tr><td><b>Ошибочная маршрутизация</b></td><td>Критично для интентов и возможной ML/LLM-прослойки</td></tr>
+              <tr><td><b>Время ожидания оператора</b></td><td>В кейсе дано 4 минуты как время ответа оператора, не AHT</td></tr>
+              <tr><td><b>Cost per automated chat</b></td><td>Нужно для инициатив с ML / LLM</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <h4>Правило релиза</h4>
+          <p>
+            Новый сценарий <b>раскатывается постепенно</b>. Если растут повторные обращения, падает CSAT или увеличивается ошибочная маршрутизация — <b>откат и разбор причины</b>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.9 Риски                                                 -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-risks" data-slide-title="3.9 Риски">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.9 / Риски</div></div>
+        <h2>Главные риски и реакция</h2>
+
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:24%">Риск</th><th style="width:32%">Как замечаю</th><th>Что делаю</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(229,56,79,0.06);">
+                <td><b>Формальная автоматизация</b></td>
+                <td>Автоматизация растёт, но repeat-contact-7d тоже растёт</td>
+                <td>Не засчитываю такой рост, откатываю сценарий</td>
+              </tr>
+              <tr>
+                <td><b>22,7% окажутся неавтоматизируемыми</b></td>
+                <td>После реклассификации мало массовых безопасных тем</td>
+                <td>Пересобираю год 2, усиливаю сценарии, контекст и безопасные сегменты</td>
+              </tr>
+              <tr>
+                <td><b>Падение CSAT</b></td>
+                <td>CSAT бота или сценария падает на rollout</td>
+                <td>Откат до прошлой ступени</td>
+              </tr>
+              <tr>
+                <td><b>Перегруз ML-инженера</b></td>
+                <td>ML-задачи блокируют roadmap</td>
+                <td>Не запускаю одновременно реклассификацию, маршрутизацию и сложную память</td>
+              </tr>
+              <tr>
+                <td><b>Дорогой ML/LLM без эффекта</b></td>
+                <td>Стоимость обработки растёт, а вклад малый</td>
+                <td>Начинаю с правил, выборок и кластеров; ML/LLM только после проверки</td>
+              </tr>
+              <tr>
+                <td><b>VIP-инцидент</b></td>
+                <td>Ошибка или жалоба в дорогом сегменте</td>
+                <td>VIP по умолчанию остаётся у оператора</td>
+              </tr>
+              <tr>
+                <td><b>Compliance по памяти</b></td>
+                <td>Нужно хранить данные между сессиями</td>
+                <td>В основной план беру только контекст текущего диалога</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────── -->
+    <!-- 3.10 Целевое состояние                                    -->
+    <!-- ─────────────────────────────────────────────────────── -->
+    <section class="section slide" id="b3-final" data-slide-title="3.10 Целевое состояние">
+      <div class="section__inner">
+        <div class="section-label-row"><div class="section-label">3.10 / Целевое состояние через 24 месяца</div></div>
+        <h2>Что должно быть к месяцу 24</h2>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
+          Через 24 месяца целевое состояние — <b>60% качественной автоматизации</b>. Бот закрывает массовые, повторяемые и безопасные сценарии: <b>карты, переводы, лимиты, подписки, навигация, типовые FAQ и новые сценарии из реклассифицированных причин</b>.
+        </p>
+
+        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
+          <b>Оператор остаётся</b> для сложных, эмоциональных, юридически чувствительных сценариев, включая спорные и финансово рискованные обращения должников, а также для VIP по умолчанию.
+        </p>
+
+        <div class="final-message">
+          <div class="final-message__label">Финальный месседж</div>
+          <p class="final-message__text">
+            Рост автоматизации достигается не через удержание клиента в боте любой ценой, а через понятные сценарии, контроль повторных обращений, постепенную раскатку и ограничения по качеству.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      <img src="./brandbook/photo_5460910081051400239_x.jpg" alt="T-Bank" style="width:32px;height:32px;border-radius:8px;display:block;flex-shrink:0;" aria-hidden="true">
+      <span style="flex:1;min-width:200px;">Дмитрий Ярочкин · Мини-CEO Т-Банк · Май 2026 · <a class="link" href="mailto:blackbonik@gmail.com">blackbonik@gmail.com</a> · <a class="link" href="https://t.me/YaFufig" target="_blank">@YaFufig</a></span>
+      <a class="link" href="#hero">↑ В начало</a>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" aria-live="polite"></div>
+
+  <script src="./assets/script.js"></script>
+</body>
+</html>
