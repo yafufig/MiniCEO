@@ -932,6 +932,229 @@
       text-decoration-color: var(--ink);
     }
 
+    /* ── Усиление индикаторов сворачиваемости ──────────────── */
+    /* Шевроны → крупные жёлтые круги-кнопки с явным «+/−» */
+    .task-card__chevron,
+    .proj-card__chevron,
+    .mockup-details__chevron {
+      width: 38px !important;
+      height: 38px !important;
+      border-radius: 50% !important;
+      background: var(--yellow) !important;
+      color: var(--ink) !important;
+      font-size: 0 !important;
+      font-weight: 800 !important;
+      line-height: 1 !important;
+      box-shadow: 0 3px 10px rgba(255,221,45,0.5), 0 0 0 1.5px rgba(0,0,0,0.06) !important;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .15s, box-shadow .15s, color .15s !important;
+      flex-shrink: 0;
+      position: relative;
+    }
+    /* Иконка «+» через ::before, меняется на «−» при открытом */
+    .task-card__chevron::before,
+    .proj-card__chevron::before,
+    .mockup-details__chevron::before {
+      content: '+';
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      font-weight: 800;
+      font-family: var(--font-display);
+      color: var(--ink);
+      line-height: 1;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .task-card[open] > summary .task-card__chevron::before,
+    .proj-card[open] > summary .proj-card__chevron::before,
+    .mockup-details[open] > summary .mockup-details__chevron::before {
+      content: '−';
+      transform: scale(1.1);
+    }
+    /* Hover — пульсация и тень глубже */
+    .task-card:hover > summary .task-card__chevron,
+    .proj-card:hover > summary .proj-card__chevron,
+    .mockup-details:hover > summary .mockup-details__chevron {
+      transform: scale(1.08) !important;
+      box-shadow: 0 5px 16px rgba(255,221,45,0.65), 0 0 0 1.5px rgba(0,0,0,0.08) !important;
+    }
+    /* В открытом — тёмный круг с жёлтой иконкой (контрастная инверсия) */
+    .task-card[open] > summary .task-card__chevron,
+    .proj-card[open] > summary .proj-card__chevron,
+    .mockup-details[open] > summary .mockup-details__chevron {
+      background: var(--ink) !important;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.22) !important;
+      transform: none !important;
+    }
+    .task-card[open] > summary .task-card__chevron::before,
+    .proj-card[open] > summary .proj-card__chevron::before,
+    .mockup-details[open] > summary .mockup-details__chevron::before {
+      color: var(--yellow);
+    }
+
+    /* Подпись «Развернуть / Свернуть» рядом с шевроном (если её нет в HTML — добавляется через ::after) */
+    .task-card > summary,
+    .proj-card > summary,
+    .mockup-details > summary {
+      padding-right: 18px !important;
+    }
+    .task-card > summary::after,
+    .proj-card > summary::after,
+    .mockup-details > summary::after {
+      content: 'Развернуть ';
+      order: 99;
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text3);
+      flex-shrink: 0;
+      margin-left: -2px;
+      margin-right: 2px;
+      align-self: center;
+      transition: color .15s;
+    }
+    .task-card[open] > summary::after,
+    .proj-card[open] > summary::after,
+    .mockup-details[open] > summary::after {
+      content: 'Свернуть';
+      color: var(--ink);
+    }
+    [data-theme="dark"] .task-card[open] > summary::after,
+    [data-theme="dark"] .proj-card[open] > summary::after,
+    [data-theme="dark"] .mockup-details[open] > summary::after {
+      color: var(--yellow);
+    }
+    .task-card:hover > summary::after,
+    .proj-card:hover > summary::after,
+    .mockup-details:hover > summary::after {
+      color: var(--ink);
+    }
+    [data-theme="dark"] .task-card:hover > summary::after,
+    [data-theme="dark"] .proj-card:hover > summary::after,
+    [data-theme="dark"] .mockup-details:hover > summary::after {
+      color: var(--text);
+    }
+
+    /* Шеврон должен быть последним визуально (после "Развернуть") */
+    .task-card__chevron,
+    .proj-card__chevron,
+    .mockup-details__chevron {
+      order: 100;
+    }
+
+    /* Hover на саму карточку — сильнее тень + жёлтая рамка */
+    .task-card:hover,
+    .proj-card:hover,
+    .mockup-details:hover {
+      border-color: rgba(255,221,45,0.6) !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10), 0 0 0 1px rgba(255,221,45,0.2) !important;
+    }
+    .task-card,
+    .proj-card,
+    .mockup-details {
+      transition: border-color .2s, box-shadow .2s !important;
+    }
+
+    /* Лёгкая «дышащая» подсказка для первого закрытого collapsible — лёгкий пульс шеврона раз в 8 сек */
+    @keyframes chevronBreath {
+      0%, 88%, 100% { transform: scale(1); }
+      92% { transform: scale(1.12); }
+    }
+    .task-card:not([open]) > summary .task-card__chevron,
+    .proj-card:not([open]) > summary .proj-card__chevron,
+    .mockup-details:not([open]) > summary .mockup-details__chevron {
+      animation: chevronBreath 8s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .task-card:not([open]) > summary .task-card__chevron,
+      .proj-card:not([open]) > summary .proj-card__chevron,
+      .mockup-details:not([open]) > summary .mockup-details__chevron {
+        animation: none;
+      }
+    }
+
+    /* ── Mockup-details (collapsible для вайб-мокапов) ──────── */
+    .mockup-details {
+      margin-top: 14px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .mockup-details:hover { border-color: rgba(255,221,45,0.5); }
+    .mockup-details[open] {
+      border-color: var(--yellow);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .mockup-details > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 13.5px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      transition: background .15s;
+    }
+    [data-theme="dark"] .mockup-details > summary { color: var(--text); }
+    .mockup-details > summary::-webkit-details-marker { display: none; }
+    .mockup-details > summary:hover { background: rgba(255,221,45,0.06); }
+    .mockup-details__icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--yellow);
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .mockup-details__title { flex: 1; min-width: 0; }
+    .mockup-details__hint {
+      flex-shrink: 0;
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text3);
+      padding: 3px 9px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 999px;
+    }
+    [data-theme="dark"] .mockup-details__hint { background: rgba(255,255,255,0.06); }
+    .mockup-details__chevron {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--text3);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), color .15s;
+      flex-shrink: 0;
+      font-weight: 300;
+    }
+    .mockup-details[open] > summary .mockup-details__chevron {
+      transform: rotate(90deg);
+      color: var(--ink);
+    }
+    [data-theme="dark"] .mockup-details[open] > summary .mockup-details__chevron { color: var(--yellow); }
+    .mockup-details__body {
+      padding: 22px 20px 24px;
+      border-top: 1px dashed var(--border2);
+    }
+    .mockup-details__body .vibe-mockup-row { margin-top: 0; }
+
     /* ── Project card (компактный collapsible для проектов) ── */
     .proj-list {
       display: grid;
@@ -1952,62 +2175,127 @@
           <b>52 ₽</b> — допущение по ФОТ-стоимости одной эскалации (4 минуты × ~13 ₽/мин операторо-времени, индустриальный бенчмарк банковского контакт-центра). Точное число у Т-Банка может отличаться. <b>Главное здесь не сама экономия в 4,5 млн</b>, а то что текущие 70% переводов на оператора содержат часть случайных и UX-спровоцированных эскалаций — поэтому потенциал автоматизации занижен.
         </p>
 
-        <h4 class="sub-section">Решение в два слоя</h4>
-        <div class="cards cards--2">
-          <div class="card card--feature">
-            <div class="card__icon">⚙️</div>
-            <h3>Слой 1 — на стороне агента</h3>
-            <p>В каждом сценарии после регистратора шага добавить распознавание команды <b>«отмена / назад / отменить / вернуться»</b> как возврат на предыдущий шаг сценария, а не fallback. Все агенты уже понимают команду «оператор» в тексте — нужно расширить тот же механизм на «отмена / назад» и обрабатывать его до логики выхода. <b>«Назад» и «Отмена» становятся нативным шагом сценария</b>, без нужды в отдельных кнопках под каждым ответом бота.</p>
-          </div>
-          <div class="card card--feature">
-            <div class="card__icon">🖱️</div>
-            <h3>Слой 2 — единственное UI-добавление</h3>
-            <p><b>Кнопка «Отменить вызов оператора»</b> в окне ожидания, пока не пришло первое сообщение сотрудника. У пользователя есть несколько секунд, чтобы успеть подкликнуть, если эскалация случилась по ошибке. Также нужен новый код причины <code>accidental_operator_call</code> («случайный вызов оператора»), так как это новая категория сценария.</p>
-          </div>
+        <h4 class="sub-section">Решение в два слоя <span class="badge">вайб-мокап — бонус задания</span></h4>
+
+        <!-- Слой 1: описание + сворачиваемый мокап -->
+        <div class="card card--feature" style="margin-top:18px;">
+          <div class="card__icon">⚙️</div>
+          <h3>Слой 1 — на стороне агента</h3>
+          <p>В каждом сценарии после регистратора шага добавить распознавание команды <b>«отмена / назад / отменить / вернуться»</b> как возврат на предыдущий шаг сценария, а не fallback. Все агенты уже понимают команду «оператор» в тексте — нужно расширить тот же механизм на «отмена / назад» и обрабатывать его до логики выхода. <b>«Назад» и «Отмена» становятся нативным шагом сценария</b>, без нужды в отдельных кнопках под каждым ответом бота.</p>
         </div>
 
-        <h4 class="sub-section">Вайб-мокап решения <span class="badge">бонус задания</span></h4>
-        <div class="vibe-mockup-row">
-          <div>
-            <div class="vibe-mockup-label vibe-mockup-label--before">— Сейчас</div>
-            <div class="vibe-phone">
-              <div class="vibe-phone__header">
-                <div class="vibe-phone__avatar">Т</div>
-                <div>
-                  <div class="vibe-phone__title">Поддержка</div>
-                  <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+        <details class="mockup-details">
+          <summary>
+            <span class="mockup-details__icon">📱</span>
+            <span class="mockup-details__title">Мокап Слоя 1 — команды «отмена / назад» внутри сценария</span>
+            <span class="mockup-details__hint">Сейчас / Стало</span>
+            <span class="mockup-details__chevron">›</span>
+          </summary>
+          <div class="mockup-details__body">
+            <div class="vibe-mockup-row">
+              <div>
+                <div class="vibe-mockup-label vibe-mockup-label--before">— Сейчас</div>
+                <div class="vibe-phone">
+                  <div class="vibe-phone__header">
+                    <div class="vibe-phone__avatar">Т</div>
+                    <div>
+                      <div class="vibe-phone__title">Поддержка</div>
+                      <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                    </div>
+                  </div>
+                  <div class="vibe-phone__body">
+                    <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: сделать это можно в приложении.</div>
+                    <div class="vibe-msg vibe-msg--user">Отмена</div>
+                    <div class="vibe-msg vibe-msg--system">Переключаем ваш диалог на сотрудника…</div>
+                  </div>
                 </div>
               </div>
-              <div class="vibe-phone__body">
-                <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: сделать это можно в приложении.</div>
-                <div class="vibe-msg vibe-msg--user">Отмена</div>
-                <div class="vibe-msg vibe-msg--system">Переключаем ваш диалог на сотрудника…</div>
+
+              <div>
+                <div class="vibe-mockup-label vibe-mockup-label--after">→ Стало</div>
+                <div class="vibe-phone">
+                  <div class="vibe-phone__header">
+                    <div class="vibe-phone__avatar">Т</div>
+                    <div>
+                      <div class="vibe-phone__title">Поддержка</div>
+                      <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                    </div>
+                  </div>
+                  <div class="vibe-phone__body">
+                    <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: <a href="#">открыть в приложении →</a></div>
+                    <div class="vibe-msg vibe-msg--user">Отмена</div>
+                    <div class="vibe-msg vibe-msg--bot">Возвращаю на шаг «Выбрать причину». Если что-то ещё — напишите.</div>
+                    <div class="vibe-extra">
+                      <b>+</b> агент распознаёт «отмена», «назад», «вернуться» в тексте
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+        </details>
 
-          <div>
-            <div class="vibe-mockup-label vibe-mockup-label--after">→ Стало</div>
-            <div class="vibe-phone">
-              <div class="vibe-phone__header">
-                <div class="vibe-phone__avatar">Т</div>
-                <div>
-                  <div class="vibe-phone__title">Поддержка</div>
-                  <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+        <!-- Слой 2: описание + сворачиваемый мокап -->
+        <div class="card card--feature" style="margin-top:24px;">
+          <div class="card__icon">🖱️</div>
+          <h3>Слой 2 — единственное UI-добавление</h3>
+          <p><b>Кнопка «Отменить вызов оператора»</b> в окне ожидания, пока не пришло первое сообщение сотрудника. У пользователя есть несколько секунд, чтобы успеть подкликнуть, если эскалация случилась по ошибке. Также нужен новый код причины <code>accidental_operator_call</code> («случайный вызов оператора»), так как это новая категория сценария.</p>
+        </div>
+
+        <details class="mockup-details">
+          <summary>
+            <span class="mockup-details__icon">📱</span>
+            <span class="mockup-details__title">Мокап Слоя 2 — окно ожидания оператора с возможностью отмены</span>
+            <span class="mockup-details__hint">Сейчас / Стало</span>
+            <span class="mockup-details__chevron">›</span>
+          </summary>
+          <div class="mockup-details__body">
+            <div class="vibe-mockup-row">
+              <div>
+                <div class="vibe-mockup-label vibe-mockup-label--before">— Сейчас</div>
+                <div class="vibe-phone">
+                  <div class="vibe-phone__header">
+                    <div class="vibe-phone__avatar">Т</div>
+                    <div>
+                      <div class="vibe-phone__title">Поддержка</div>
+                      <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                    </div>
+                  </div>
+                  <div class="vibe-phone__body">
+                    <div class="vibe-msg vibe-msg--user">Отмена</div>
+                    <div class="vibe-msg vibe-msg--system">Переключаем ваш диалог на сотрудника…</div>
+                    <div class="vibe-msg vibe-msg--system" style="opacity:0.7;">Среднее время ответа: 4 минуты</div>
+                    <div class="vibe-extra" style="text-align:center;color:var(--danger);">
+                      ✕ Способа отменить случайный вызов нет —<br>пользователь ждёт оператора и тратит его время
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="vibe-phone__body">
-                <div class="vibe-msg vibe-msg--bot">Обновите информацию о себе: <a href="#">открыть в приложении →</a></div>
-                <div class="vibe-msg vibe-msg--user">Отмена</div>
-                <div class="vibe-msg vibe-msg--bot">Возвращаю на шаг «Выбрать причину». Если что-то ещё — напишите.</div>
-                <div class="vibe-extra">
-                  <b>+</b> агент распознаёт «отмена», «назад», «вернуться» в тексте<br>
-                  <b>+</b> если оператор всё-таки вызван — кнопка «Отменить вызов оператора» в окне ожидания
+
+              <div>
+                <div class="vibe-mockup-label vibe-mockup-label--after">→ Стало</div>
+                <div class="vibe-phone">
+                  <div class="vibe-phone__header">
+                    <div class="vibe-phone__avatar">Т</div>
+                    <div>
+                      <div class="vibe-phone__title">Поддержка</div>
+                      <div class="vibe-phone__subtitle">Мы рядом 24/7</div>
+                    </div>
+                  </div>
+                  <div class="vibe-phone__body">
+                    <div class="vibe-msg vibe-msg--user">Отмена</div>
+                    <div class="vibe-msg vibe-msg--system">Ищу сотрудника. Обычно ответ в течение 4 минут.</div>
+                    <div class="vibe-cta vibe-cta--solid" style="align-self:center;margin-top:6px;">✕ Отменить вызов оператора</div>
+                    <div class="vibe-extra">
+                      <b>+</b> кнопка активна, пока не пришло первое сообщение сотрудника<br>
+                      <b>+</b> новый reason-код <code style="font-size:10.5px;color:#ffdd2d;">accidental_operator_call</code>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </details>
 
         <h4 class="sub-section">На какие метрики повлияет</h4>
         <p style="color:var(--text2);font-size:14.5px;line-height:1.65;">
