@@ -852,6 +852,279 @@
     @media (max-width: 720px) {
       .brand__title { font-size: 12px; }
     }
+
+    /* ── Фикс наложения sticky-хедера на контент при якорной навигации ── */
+    html { scroll-padding-top: 84px; }
+    .slide { scroll-margin-top: 84px; }
+    /* Воздух между хедером и первым контентом — невидимая прослойка */
+    main.page::before {
+      content: '';
+      display: block;
+      height: 8px;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    /* ── Format callout — пояснение про HTML/PDF в шапке ─────── */
+    .format-callout {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      max-width: 720px;
+      margin: 22px 0 28px;
+      padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(255,221,45,0.16), rgba(255,221,45,0.06));
+      border: 1.5px solid rgba(255,221,45,0.45);
+      border-radius: var(--r-lg);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    [data-theme="dark"] .format-callout { color: var(--text); }
+    .format-callout__pill {
+      flex-shrink: 0;
+      font-family: var(--font-display);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+      background: var(--yellow);
+      padding: 4px 10px;
+      border-radius: 999px;
+      align-self: center;
+    }
+    .format-callout__body { flex: 1; min-width: 0; }
+    .format-callout__body b { color: var(--ink); }
+    [data-theme="dark"] .format-callout__body b { color: var(--text); }
+    .format-callout__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1.5px;
+      text-decoration-color: var(--yellow-dim);
+      cursor: pointer;
+      transition: color .15s, text-decoration-color .15s;
+    }
+    [data-theme="dark"] .format-callout__link { color: var(--yellow); }
+    .format-callout__link:hover {
+      color: var(--ink);
+      text-decoration-color: var(--ink);
+    }
+
+    /* ── Task card: «Что просили в этом блоке» (collapsible) ── */
+    .task-card {
+      margin-top: 28px;
+      max-width: 760px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(0,0,0,0.10);
+      border-left: 4px solid var(--ink);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    [data-theme="dark"] .task-card {
+      background: rgba(28,30,36,0.85);
+      border-color: rgba(255,221,45,0.22);
+      border-left-color: var(--yellow);
+    }
+    .task-card:hover {
+      box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+    }
+    .task-card[open] {
+      border-left-color: var(--yellow);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.10);
+    }
+    .task-card > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      user-select: none;
+      transition: background .15s;
+    }
+    .task-card > summary::-webkit-details-marker { display: none; }
+    .task-card > summary:hover { background: rgba(255,221,45,0.08); }
+    [data-theme="dark"] .task-card > summary { color: var(--text); }
+    .task-card__icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--yellow);
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .task-card__title { flex: 1; min-width: 0; }
+    .task-card__hint {
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text3);
+      flex-shrink: 0;
+      padding: 3px 8px;
+      background: rgba(0,0,0,0.04);
+      border-radius: 999px;
+    }
+    [data-theme="dark"] .task-card__hint {
+      background: rgba(255,255,255,0.06);
+    }
+    .task-card__chevron {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      line-height: 1;
+      color: var(--text3);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), color .2s;
+      flex-shrink: 0;
+      font-weight: 300;
+    }
+    .task-card[open] > summary .task-card__chevron {
+      transform: rotate(90deg);
+      color: var(--ink);
+    }
+    [data-theme="dark"] .task-card[open] > summary .task-card__chevron { color: var(--yellow); }
+    .task-card__body {
+      padding: 6px 22px 22px;
+      border-top: 1px dashed rgba(0,0,0,0.08);
+      font-size: 14.5px;
+      line-height: 1.65;
+      color: var(--text2);
+    }
+    [data-theme="dark"] .task-card__body { border-top-color: rgba(255,255,255,0.08); }
+    .task-card__source {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text3);
+      padding: 4px 10px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 999px;
+      margin: 14px 0 4px;
+    }
+    [data-theme="dark"] .task-card__source { background: rgba(255,255,255,0.06); }
+    .task-card__body h4 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 18px 0 8px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--yellow);
+      display: inline-block;
+    }
+    [data-theme="dark"] .task-card__body h4 { color: var(--text); }
+    .task-card__body h4:first-of-type { margin-top: 8px; }
+    .task-card__body p { margin: 4px 0; }
+    .task-card__body ul {
+      margin: 6px 0 6px;
+      padding-left: 22px;
+    }
+    .task-card__body ul li { margin-bottom: 5px; }
+    .task-card__body code {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 12px;
+      background: rgba(0,0,0,0.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    [data-theme="dark"] .task-card__body code { background: rgba(255,255,255,0.08); }
+    .task-card__quote {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--yellow);
+      background: rgba(255,221,45,0.08);
+      font-style: italic;
+      font-size: 13.5px;
+      color: var(--text2);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* ── Theme toggle: switch (тумблер) ──────────────────────── */
+    .btn--theme {
+      width: 56px !important;
+      height: 28px !important;
+      padding: 0 !important;
+      border-radius: 999px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      position: relative !important;
+      border: 1.5px solid var(--border2) !important;
+      background: var(--surface2) !important;
+      cursor: pointer;
+      transition: background .25s, border-color .25s !important;
+      transform: none !important;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06) !important;
+      flex-shrink: 0;
+    }
+    .btn--theme:hover {
+      border-color: rgba(255,221,45,0.5) !important;
+      transform: none !important;
+    }
+    [data-theme="dark"] .btn--theme {
+      background: rgba(0,0,0,0.30) !important;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.25) !important;
+    }
+    /* Бегунок (thumb) — круг, который скользит */
+    .btn--theme::before {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--yellow);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
+      transition: transform .28s cubic-bezier(.34,1.56,.64,1), background .25s;
+      z-index: 1;
+      pointer-events: none;
+    }
+    [data-theme="dark"] .btn--theme::before {
+      transform: translateX(26px);
+      background: #fff;
+    }
+    /* Обе иконки видны одновременно, поверх бегунка */
+    .btn--theme .icon-sun,
+    .btn--theme .icon-moon {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
+      line-height: 1;
+      position: relative;
+      z-index: 2;
+      transition: opacity .2s, filter .2s;
+      pointer-events: none;
+    }
+    .btn--theme .icon-sun  { margin-left: 3px; opacity: 1; }
+    .btn--theme .icon-moon { margin-right: 3px; opacity: 0.45; filter: grayscale(0.4); }
+    [data-theme="dark"] .btn--theme .icon-sun  { opacity: 0.45; filter: grayscale(0.4); }
+    [data-theme="dark"] .btn--theme .icon-moon { opacity: 1; filter: none; }
   </style>
 </head>
 
@@ -890,7 +1163,33 @@
           <span class="icon-sun">☀️</span>
           <span class="icon-moon">🌙</span>
         </button>
-        <a class="btn" href="./IarochkinMiniCEO.pdf" download="IarochkinMiniCEO.pdf">Скачать PDF</a>
+        <a class="btn" href="./IarochkinMiniCEO.pdf" download="IarochkinMiniCEO.pdf" id="pdfDownload">Скачать PDF</a>
+        <script>
+          // Гарантированное скачивание PDF (Chrome иногда игнорирует download attribute и открывает PDF inline)
+          document.getElementById('pdfDownload')?.addEventListener('click', async (e) => {
+            try {
+              e.preventDefault();
+              const btn = e.currentTarget;
+              const orig = btn.textContent;
+              btn.textContent = 'Загружаю…';
+              const res = await fetch('./IarochkinMiniCEO.pdf', { cache: 'no-store' });
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'IarochkinMiniCEO.pdf';
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              setTimeout(() => URL.revokeObjectURL(url), 1000);
+              btn.textContent = orig;
+            } catch (err) {
+              // Fallback на стандартное поведение
+              window.open('./IarochkinMiniCEO.pdf', '_blank');
+            }
+          });
+        </script>
       </div>
     </div>
     <div class="progress" aria-hidden="true">
@@ -952,6 +1251,14 @@
         <p class="hero__lead">
           Три блока: <b>о себе</b> и продуктовые кейсы, <b>разбор UX чата поддержки Т-Банка</b>, <b>план достижения 60% автоматизации</b> с командой за 24 месяца.
         </p>
+
+        <div class="format-callout" role="note">
+          <span class="format-callout__pill">FYI</span>
+          <div class="format-callout__body">
+            Это <b>полная HTML-версия для ознакомления</b> — с расширенной детализацией, таблицами и интерактивом.
+            Если нужна <b>краткая версия на 6 страниц для отправки</b> — нажмите кнопку <a class="format-callout__link" href="./IarochkinMiniCEO.pdf" download="IarochkinMiniCEO.pdf" id="pdfDownloadHero">«Скачать PDF» →</a> справа в шапке (или по этой ссылке).
+          </div>
+        </div>
 
         <p class="hero__owner">
           Дмитрий Ярочкин
@@ -1123,6 +1430,30 @@
         <p class="block-divider__lead">
           Контекст, кейс успеха (FM Logistic), кейс провала (Quest), кейс «метрика обманула» (HSTU в Яндексе).
         </p>
+
+        <details class="task-card">
+          <summary>
+            <span class="task-card__icon">📋</span>
+            <span class="task-card__title">Что просили сделать в этом блоке</span>
+            <span class="task-card__hint">из задания</span>
+            <span class="task-card__chevron">›</span>
+          </summary>
+          <div class="task-card__body">
+            <span class="task-card__source">Блок 1 · О вас</span>
+
+            <h4>1. Контекст</h4>
+            <p>Ваша роль, компания, продукт. Для кого этот продукт, какую задачу решает, за что отвечали лично вы.</p>
+
+            <h4>2. Успех и провал</h4>
+            <ul>
+              <li>Расскажите о продуктовом решении, которым вы <b>гордитесь</b>. Что сделали лично вы и почему считаете это результатом.</li>
+              <li>Расскажите о продуктовом решении, которое <b>не сработало</b>. Что пошло не так, как вы это поняли, чем закончилось.</li>
+            </ul>
+
+            <h4>3. Метрики</h4>
+            <p>Опишите ситуацию, когда <b>метрика показывала рост, но продукт на самом деле становился хуже</b> (или наоборот). Как вы это обнаружили и какие действия предприняли.</p>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -1276,6 +1607,30 @@
         <p class="block-divider__lead">
           Разбор UX чата поддержки Т-Банка (3 проблемы, главный фокус — «Отмена» уходит в fallback на оператора). Top — Duolingo: streak + лиги, soft streak как защита от анти-паттерна.
         </p>
+
+        <details class="task-card">
+          <summary>
+            <span class="task-card__icon">📋</span>
+            <span class="task-card__title">Что просили сделать в этом блоке</span>
+            <span class="task-card__hint">из задания</span>
+            <span class="task-card__chevron">›</span>
+          </summary>
+          <div class="task-card__body">
+            <span class="task-card__source">Блок 2 · Продуктовое мышление</span>
+
+            <h4>2.1. Разбор интерфейса</h4>
+            <p>Откройте главную страницу поддержки Т-Банка в приложении (<b>Главная → Чат</b>).</p>
+            <ul>
+              <li>Найдите <b>3 проблемы</b> в текущем UX/UI. Выделите <b>одну наиболее значимую</b> и объясните свой выбор.</li>
+              <li>Для выбранной проблемы предложите решение. Объясните, <b>на какие метрики</b> оно может повлиять и почему.</li>
+              <li>Приложите скриншоты, если они помогают раскрыть ответ.</li>
+              <li><b>Бонус:</b> если вы задизайните (вайб дизайните!) предложенное решение — это будет плюсом.</li>
+            </ul>
+
+            <h4>2.2. Топ оф зе Топ</h4>
+            <p>Приложите ссылку на один сервис или продукт, который вы считаете <b>выдающимся</b>. Объясните: что именно в нём сделано хорошо, почему это работает и что можно было бы улучшить.</p>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -1494,6 +1849,43 @@
         <p class="block-divider__lead">
           24 месяца, четыре волны: данные → пробелы сценариев → контекст и формулировки → масштабирование. Цель: 60% качественной автоматизации без ухудшения клиентского опыта.
         </p>
+
+        <details class="task-card">
+          <summary>
+            <span class="task-card__icon">📋</span>
+            <span class="task-card__title">Что просили сделать в этом блоке</span>
+            <span class="task-card__hint">из задания</span>
+            <span class="task-card__chevron">›</span>
+          </summary>
+          <div class="task-card__body">
+            <span class="task-card__source">Блок 3 · Кейс: автоматизация чат-бота</span>
+
+            <h4>Ситуация</h4>
+            <p>Вы — продакт-менеджер в Т-Банке. В вашей зоне ответственности — чат-бот поддержки. Текущая доля автоматизации (доля чатов, где бот решил вопрос клиента без участия оператора) составляет <b>30%</b>. Цель бизнеса — достичь <b>60% за 2 года</b>, сохранив качество клиентского опыта.</p>
+
+            <h4>Дополнительный контекст</h4>
+            <ul>
+              <li><b>Объём:</b> ~1,2 млн чатов в месяц. Автоматизация 30% = ~360 тыс. решённых ботом. На оператора уходит 70% (~840 тыс.).</li>
+              <li><b>CSAT:</b> бота 3,2 из 5; оператора 4,1 из 5.</li>
+              <li><b>VIP-клиенты</b> (~8% базы) генерируют ~35% выручки компании.</li>
+              <li><b>Время ответа:</b> оператор 4 мин; бот 8 сек.</li>
+              <li><b>Команда:</b> 6 разработчиков, 1 ML-инженер, 1 аналитик, 1 дизайнер.</li>
+            </ul>
+
+            <h4>Задание</h4>
+            <p>Составьте <b>план достижения 60% автоматизации</b>. В плане должно быть понятно:</p>
+            <ul>
+              <li>Что вы делаете и в каком порядке.</li>
+              <li>Почему именно эти приоритеты, а не другие.</li>
+              <li>Как вы измеряете успех и на какие <b>контрметрики</b> обращаете внимание.</li>
+              <li>Какие <b>trade-offs</b> вы принимаете осознанно.</li>
+              <li>Какие <b>риски</b> видите.</li>
+            </ul>
+            <div class="task-card__quote">
+              «Мы понимаем, что у задачи нет единственно правильного ответа. Нам важно увидеть ваш подход к анализу, приоритизации и принятию решений. Удачи.»
+            </div>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -2012,17 +2404,87 @@
           приоритет = размер проблемы × ожидаемый вклад × уверенность / сложность и риск
         </div>
 
-        <p style="color:var(--text2);font-size:15px;line-height:1.7;">
-          Поэтому сначала иду в <b>22,7% неизвестных причин</b>: без этого год 2 будет строиться вслепую. Затем — <b>пробелы сценариев</b>, потому что это самый понятный атакуемый кластер: 13,1% всех чатов. После этого — <b>контекст и формулировки</b>, потому что они работают лучше, когда уже есть сценарии, куда можно направить клиента.
-        </p>
+        <h4 class="sub-section">Что делаю первым и почему</h4>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:6%">№</th><th style="width:36%">Шаг</th><th>Почему именно сейчас</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>1</b></td>
+                <td><b>22,7% неизвестных причин</b><br><span style="font-size:12px;color:var(--text3)">реклассификация в Q1</span></td>
+                <td>Без этого год 2 будет строиться <b>вслепую</b>. Резерв для масштабирования (новые сценарии из 22,7%) даёт +7–9 п.п. — это главный риск всего плана.</td>
+              </tr>
+              <tr>
+                <td><b>2</b></td>
+                <td><b>Пробелы сценариев</b><br><span style="font-size:12px;color:var(--text3)">пул 13,1% всех чатов</span></td>
+                <td>Самый <b>понятный атакуемый кластер</b>: «бот не знает ветку / нет ответа / неизвестное намерение». Прямая механика решения — добавить ветку.</td>
+              </tr>
+              <tr>
+                <td><b>3</b></td>
+                <td><b>Контекст и формулировки</b><br><span style="font-size:12px;color:var(--text3)">пул 9,1% + 5,8%</span></td>
+                <td>Работают <b>лучше, когда уже есть сценарии</b>, куда можно направить клиента. Иначе улучшать «понимание» бесполезно — направлять некуда.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
-          <b>Технические ошибки</b> идут фоном: они не дают главный прирост, но защищают доверие к боту. <b>UX-выход</b> проверяю быстро, потому что в Блоке 2 уже найден конкретный пример, но не закладываю большой эффект без логов. <b>Отключённые сегменты</b> не использую как быстрый источник роста, потому что в одной строке смешаны VIP, гости и должники. Без разбивки это слишком рискованно.
-        </p>
+        <h4 class="sub-section">Что идёт фоном или с осторожностью</h4>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:32%">Кластер</th><th style="width:14%">Режим</th><th>Почему так</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Технические ошибки</b><br><span style="font-size:12px;color:var(--text3)">~3,2%</span></td>
+                <td><span class="pill-low">Фоном</span></td>
+                <td>Не дают главный прирост, но <b>защищают доверие</b> к боту. Чиню по ходу, без выделенного спринта.</td>
+              </tr>
+              <tr>
+                <td><b>UX-выход «Отмена»</b><br><span style="font-size:12px;color:var(--text3)">из Блока 2</span></td>
+                <td><span class="pill-med">Быстрый тест</span></td>
+                <td>Конкретный пример <b>уже есть</b> в Блоке 2. Проверяю быстро, но <b>без логов не закладываю большой эффект</b> в plan-цифры.</td>
+              </tr>
+              <tr>
+                <td><b>Отключённые сегменты</b><br><span style="font-size:12px;color:var(--text3)">9,6% — VIP/гость/должник</span></td>
+                <td><span class="pill-high">Не сейчас</span></td>
+                <td>В одной строке смешаны <b>VIP, гости и должники</b>. Без разбивки — слишком рискованно как быстрый источник роста.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <div class="panel panel--accent" style="margin-top:14px;">
+        <h4 class="sub-section">Последовательность ML-задач (ограниченная команда)</h4>
+        <div class="data-table">
+          <table>
+            <thead>
+              <tr><th style="width:8%">Этап</th><th style="width:36%">Что делает ML-команда</th><th>Зачем</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>1</b></td>
+                <td>Реклассификация неизвестных причин</td>
+                <td>Открывает резерв года 2 — без этого ML-инженер занят, а карты приоритетов нет</td>
+              </tr>
+              <tr>
+                <td><b>2</b></td>
+                <td>Улучшение маршрутизации (intent-классификация, парсинг слотов)</td>
+                <td>Применяет инсайты Q1 на сценарном слое — точечные правки, не «новая ML-модель»</td>
+              </tr>
+              <tr>
+                <td><b>3</b></td>
+                <td>Сложные ML/LLM-инструменты</td>
+                <td>Только <b>если правила и слоты не дают качества</b>. В банковском контексте сначала детерминизм, потом креатив.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel panel--accent" style="margin-top:18px;">
           <p>
-            Из-за <b>ограниченной команды</b> ML-задачи не запускаются одновременно: сначала реклассификация неизвестных причин, затем улучшение маршрутизации и только после этого более сложные ML/LLM-инструменты, если они действительно нужны.
+            <b>ML-задачи не запускаются одновременно</b> — иначе реклассификация, маршрутизация и память тянут одного человека. Это и принцип плана, и реальное ограничение команды.
           </p>
         </div>
       </div>
