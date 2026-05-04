@@ -932,6 +932,127 @@
       text-decoration-color: var(--ink);
     }
 
+    /* ── Project card (компактный collapsible для проектов) ── */
+    .proj-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      overflow: hidden;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .proj-card:hover { border-color: rgba(255,221,45,0.5); }
+    .proj-card[open] {
+      border-color: var(--yellow);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .proj-card > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      transition: background .15s;
+    }
+    .proj-card > summary::-webkit-details-marker { display: none; }
+    .proj-card > summary:hover { background: rgba(255,221,45,0.06); }
+    .proj-card__title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      flex-shrink: 0;
+      min-width: 110px;
+    }
+    [data-theme="dark"] .proj-card__title { color: var(--text); }
+    .proj-card__desc {
+      flex: 1;
+      min-width: 0;
+      color: var(--text2);
+      font-size: 13.5px;
+      line-height: 1.45;
+    }
+    .proj-card__role {
+      flex-shrink: 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      padding: 2px 8px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    [data-theme="dark"] .proj-card__role { background: rgba(255,255,255,0.06); }
+    .proj-card__chevron {
+      color: var(--text3);
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), color .15s;
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      font-weight: 300;
+    }
+    .proj-card[open] > summary .proj-card__chevron {
+      transform: rotate(90deg);
+      color: var(--ink);
+    }
+    [data-theme="dark"] .proj-card[open] > summary .proj-card__chevron { color: var(--yellow); }
+    .proj-card__body {
+      padding: 4px 18px 16px 18px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text2);
+      border-top: 1px dashed var(--border2);
+    }
+    .proj-card__body h5 {
+      font-family: var(--font-display);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 14px 0 4px;
+    }
+    [data-theme="dark"] .proj-card__body h5 { color: var(--text); }
+    .proj-card__body h5:first-of-type { margin-top: 10px; }
+    .proj-card__body p { margin: 4px 0; }
+    .proj-card__body ul { margin: 4px 0; padding-left: 20px; }
+    .proj-card__body li { margin-bottom: 3px; }
+    .proj-card__body a { color: var(--accent); }
+    [data-theme="dark"] .proj-card__body a { color: var(--info); }
+    .proj-card__meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text3);
+      margin-bottom: 6px;
+    }
+    .proj-card__tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(255,221,45,0.16);
+      border: 1px solid rgba(255,221,45,0.4);
+      border-radius: 999px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+    [data-theme="dark"] .proj-card__tag { color: var(--text); }
+
     /* ── Task card: «Что просили в этом блоке» (collapsible) ── */
     .task-card {
       margin-top: 28px;
@@ -1341,13 +1462,244 @@
           Я ML-инженер с продуктовым уклоном, 2 курс Центрального университета (трек «Искусственный интеллект»). Мой основной интерес — AI-продукты, где важно не только обучить модель, но и довести решение до бизнес-результата: найти пользователя, понять задачу, собрать MVP и выбрать метрику, которая отражает реальную ценность.
         </p>
 
-        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
-          Сейчас веду несколько проектов с реальными клиентами: <b>YOS</b> — AI-конструктор сайтов на агентной архитектуре для МСБ-клиентов банков; <b>Сеченовский университет</b> — агент записи пациентов; <b>РЖД</b> — RAG-поддержка по базе знаний; <b>AR-очки для складов</b>. Во всех проектах занимаюсь продуктовой и ML-частями.
-        </p>
+        <h4 class="sub-section">Текущие проекты с реальными клиентами</h4>
+        <p style="color:var(--text3);font-size:13px;margin-top:-2px;">Кликните на проект, чтобы прочитать подробности.</p>
+        <div class="proj-list">
 
-        <p style="color:var(--text2);font-size:15px;line-height:1.7;margin-top:14px;">
-          Прошлые роли: <b>ML-стажёр в Яндексе</b> (RecSys), <b>стажёр-разработчик ИИ-агентов в Сбере</b>, <b>бизнес-аналитик «Даркстор у дома»</b>, <b>ML-инженер в Hired Minds</b> (Qatar). Победитель 5+ хакатонов, в т.ч. кейс-хакатона ЦУ и Т-Банк × МГУ.
-        </p>
+          <!-- YOS -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">YOS</span>
+              <span class="proj-card__desc">AI-конструктор сайтов на агентной архитектуре для МСБ-клиентов банков</span>
+              <span class="proj-card__role">Product · ML/AI</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>Импортозамещающий AI-конструктор сайтов с block-based UI, SEO-оптимизацией и интеграцией платёжных систем. Сайт за <b>30 минут диалога</b> вместо недель и сотен тысяч ₽ на агентство.</p>
+
+              <h5>Целевая аудитория</h5>
+              <p>МСБ-клиенты российских банков. Сейчас в переговорах с двумя банками по партнёрству.</p>
+
+              <h5>Моя роль</h5>
+              <ul>
+                <li><b>ML/AI-архитектура:</b> агентная микросервисная часть, отвечающая за оркестрацию AI-логики (генерация контента → layout planning → SEO-оптимизация).</li>
+                <li><b>Продуктовая аналитика:</b> бизнес-план — TAM/SAM/SOM, CAGR, сегментация рынка, ценообразование, сценарии выручки и гипотезы роста.</li>
+                <li><b>Анализ рынка:</b> конкурентный ландшафт AI-конструкторов, позиционирование, целевые сегменты, спрос.</li>
+                <li><b>KPI:</b> определил продуктовые метрики и бизнес-KPI для оценки эффективности платформы.</li>
+                <li><b>Переговоры с банками</b> — рыночная, продуктовая и бизнес-аналитика для двух российских банков.</li>
+                <li><b>Акселераторы:</b> выступаю с докладами, организую работу команды, бизнес-анализ для акселератора Фактики.</li>
+              </ul>
+
+              <h5>Стек</h5>
+              <p>
+                <span class="proj-card__tag">LangChain</span>
+                <span class="proj-card__tag">LangGraph</span>
+                <span class="proj-card__tag">FastAPI</span>
+                <span class="proj-card__tag">Pydantic</span>
+                <span class="proj-card__tag">Redis</span>
+                <span class="proj-card__tag">PyTorch</span>
+              </p>
+              <p>Очередь задач на Redis для асинхронной генерации сайтов — отказоустойчивость и масштабирование под нагрузку.</p>
+
+              <h5>Что дальше</h5>
+              <p>Планирую применить <b>HRM-архитектуру</b> (<a href="https://arxiv.org/abs/2506.21734" target="_blank">arXiv:2506.21734</a>, <a href="https://arxiv.org/abs/2510.04871" target="_blank">arXiv:2510.04871</a>) — на ARC-AGI с ограниченным количеством состояний обходит LLM. По заполненной форме генерируем подходящую структуру сайта через HRM и передаём как доп. контекст первому агенту — на старте сильно дешевле, чем разворачивать и тюнить отдельную LLM.</p>
+            </div>
+          </details>
+
+          <!-- Сеченовский -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Сеченовский университет</span>
+              <span class="proj-card__desc">Агент для упрощения записи пациентов в медучреждения (RAG + расписание врачей)</span>
+              <span class="proj-card__role">Product · Agents</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>Агентная система для упрощения записи пациентов в медучреждения. RAG-стек поверх базы услуг и расписания врачей.</p>
+
+              <h5>Моя роль</h5>
+              <ul>
+                <li>Главный по агентам и продукту — <b>сам вышел на заказчика</b>, веду переговоры.</li>
+                <li>Собираю требования, помогаю двигать продукт, координирую работу команды.</li>
+                <li>Реализую агентную часть с командой студентов.</li>
+              </ul>
+
+              <h5>Статус</h5>
+              <p>Пилот.</p>
+            </div>
+          </details>
+
+          <!-- РЖД -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">РЖД</span>
+              <span class="proj-card__desc">Пилот RAG-поддержки по базе знаний — автоматизация операционных запросов</span>
+              <span class="proj-card__role">Product · Agents</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>RAG-поддержка по корпоративной базе знаний РЖД — автоматизация типовых операционных запросов сотрудников.</p>
+
+              <h5>Моя роль</h5>
+              <ul>
+                <li><b>Сам нашёл контакт</b>, веду коммуникацию с заказчиком.</li>
+                <li>Продуктовая часть и работа с агентами — выясняю use-cases, сужаю scope, валидирую качество ответов.</li>
+                <li>Координация команды студентов на разработке.</li>
+              </ul>
+
+              <h5>Статус</h5>
+              <p>Пилот.</p>
+            </div>
+          </details>
+
+          <!-- Соцпродукт МГУ -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Соцпродукт МГУ</span>
+              <span class="proj-card__desc">Поиск друзей и компании вокруг студенческих и культурных мероприятий</span>
+              <span class="proj-card__role">Product · Dev</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>Сервис для поиска друзей вокруг студенческих и культурных мероприятий — снижает порог входа в новые социальные круги в студенческой среде.</p>
+
+              <h5>Моя роль</h5>
+              <ul>
+                <li>Продукт + разработка — в команде студентов на хакатоне Т-Банк × МГУ.</li>
+              </ul>
+
+              <h5>Результат</h5>
+              <p><b>Победители хакатона Т-Банк × МГУ</b> — получили поддержку МГУ для дальнейшего развития проекта.</p>
+            </div>
+          </details>
+
+          <!-- AR-очки -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">AR-очки (Аэрочки)</span>
+              <span class="proj-card__desc">AR-навигация и ассистент для складских работников — совместно с китайской командой smart glasses</span>
+              <span class="proj-card__role">Product</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>AR-решение на smart glasses для складских работников: навигация по стеллажам, голосовой/AR-ассистент для подбора и контроля заказов. Совместно с китайской командой по smart-glasses.</p>
+
+              <h5>Моя роль</h5>
+              <ul>
+                <li><b>Веду переговоры</b> с китайской командой о возможном развитии AR-решений для складов на российском рынке.</li>
+                <li>Продуктовая часть: customer development у российских 3PL/складских клиентов, формирование use-cases.</li>
+              </ul>
+
+              <h5>Статус</h5>
+              <p>В работе — переговорный/discovery-этап.</p>
+            </div>
+          </details>
+
+        </div>
+
+        <h4 class="sub-section" style="margin-top:32px;">Прошлые роли</h4>
+        <p style="color:var(--text3);font-size:13px;margin-top:-2px;">Та же логика — кликните на роль, чтобы прочитать подробности.</p>
+        <div class="proj-list">
+
+          <!-- Яндекс -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Яндекс</span>
+              <span class="proj-card__desc">ML-стажёр, рекомендательные системы (2025) — кейс «метрика обманула» с HSTU описан в&nbsp;1.4</span>
+              <span class="proj-card__role">ML · 2025</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Команда и фокус</h5>
+              <p>Команда рекомендательных систем. Исследование современных подходов — sequential models, табличные данные.</p>
+
+              <h5>Что делал</h5>
+              <ul>
+                <li>Прорабатывал <b>PLE-эмбеддинги</b> (Progressive Layered Extraction) для категориальных признаков в DL-моделях, приближая эффективность к CatBoost (<a href="https://arxiv.org/abs/2203.05556" target="_blank">arXiv:2203.05556</a>).</li>
+                <li>Исследовал <b>HSTU-блоки</b> (Hierarchical Sequential Transduction Units) — устойчивая агрегация признаков без ограничений softmax-внимания (<a href="https://arxiv.org/abs/2402.17152" target="_blank">arXiv:2402.17152</a>).</li>
+                <li>Реализовывал прототипы на <b>PyTorch</b>, обучал и сравнивал модели на исторических данных.</li>
+                <li>Анализировал качество рекомендаций по логам пользовательской активности — <b>recall@50</b>, когортные срезы, дашборды.</li>
+                <li>Построил кумулятивные распределения активности (CDF), сегментировал аудиторию на активные/пассивные когорты.</li>
+              </ul>
+
+              <h5>Главный кейс — data leakage в HSTU</h5>
+              <p>Нашёл утечку данных из будущего через positional embedding в препроцессинге timeline. Метрики у нескольких архитектур росли «слишком равномерно» — это было сигналом. Подробно — в <a href="#b1-metric">разделе 1.4 этого сайта</a>.</p>
+            </div>
+          </details>
+
+          <!-- Сбер -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Сбер</span>
+              <span class="proj-card__desc">Стажёр-разработчик ИИ-агентов в направлении автоматизации операционных процессов</span>
+              <span class="proj-card__role">AI Agents</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что делал</h5>
+              <p>В основном аналитические задачи + наблюдение за архитектурой мульти-агентного бэкенда автоматизации операционных процессов изнутри. Этот опыт лёг в основу <a href="#b3-architecture">архитектурного паттерна Блока 3</a>: orchestrator → специализированные агенты → оператор как fallback.</p>
+            </div>
+          </details>
+
+          <!-- Даркстор -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Даркстор у дома</span>
+              <span class="proj-card__desc">Бизнес-аналитик, стратегия экспансии в новые страны (Q-commerce — Бразилия, ЛатАм, Мексика, СНГ)</span>
+              <span class="proj-card__role">BA · 2026</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что это</h5>
+              <p>Лидер рынка экспресс-доставки (Q-commerce) в РФ, готовится к экспансии в новые страны.</p>
+
+              <h5>Что делал</h5>
+              <ul>
+                <li>Аналитическая часть стратегии экспансии — <b>СНГ, Бразилия, Латинская Америка</b>.</li>
+                <li>Анализ рынка, ключевых игроков, логистической и складской инфраструктуры.</li>
+                <li>Налоговые условия и регуляторная среда целевых регионов.</li>
+                <li>Customer Journey Map для целевой аудитории.</li>
+                <li>Поэтапный план запуска — пилот + привлечение первых клиентов.</li>
+                <li>База потенциальных клиентов и партнёров; локализованные продуктовые/маркетинговые материалы.</li>
+              </ul>
+
+              <h5>Связь с Mini-CEO</h5>
+              <p>Тот же подход «standalone-проверка экономики, потом контакт с партнёром» я применил в FM Logistic-кейсе (см. <a href="#b1-success">1.2</a>) после неудачного outbound в Quest (см. <a href="#b1-failure">1.3</a>).</p>
+            </div>
+          </details>
+
+          <!-- Hired Minds -->
+          <details class="proj-card">
+            <summary>
+              <span class="proj-card__title">Hired Minds <span style="color:var(--text3);font-weight:500;">(Qatar, remote)</span></span>
+              <span class="proj-card__desc">ML-инженер — MVP генератора LinkedIn-постов на LLM API + CustDev + процесс команды</span>
+              <span class="proj-card__role">ML · 2025</span>
+              <span class="proj-card__chevron">›</span>
+            </summary>
+            <div class="proj-card__body">
+              <h5>Что делал</h5>
+              <ul>
+                <li>Разработал <b>MVP генератора LinkedIn-постов</b> на базе LLM API.</li>
+                <li>Провёл <b>CustDev-интервью</b>, выделил ключевые потребности — на их основе спроектировал систему фильтров для сценария создания контента.</li>
+                <li><b>A/B-тестирование промптов</b> и стратегий генерации; анализ вовлечённости и качества результатов.</li>
+                <li>Поставил процесс команды в Jira — <b>SCRUM-доска</b> для разработки + <b>KANBAN</b> для продуктовых задач + единый backlog.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div>
+
+        <h4 class="sub-section" style="margin-top:32px;">Соревнования</h4>
+        <div class="panel">
+          <p style="color:var(--text2);font-size:14px;line-height:1.6;">
+            <b>1 место</b> — Дататон по аналитике данных (2024) · <b>3 место</b> — Дататон «Выбор локации для ресторана» (2024) · <b>3 место</b> — Хакатон Т-Банк × МГУ (2025) · <b>1 место</b> — First Tech Challenge по робототехнике (2022) · <b>1 место</b> — Предпроф · <b>топ-5</b> — VTB Hack (прогнозирование переводов между юр. лицами на 250M+ транзакциях, ensemble CatBoost+XGBoost, MSLE 0.156) · <b>89% accuracy</b> — CLIP-классификатор цвета товаров для Авито (multimodal, fine-tuned ViT, baseline +15%).
+          </p>
+        </div>
       </div>
     </section>
 
