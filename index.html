@@ -2695,6 +2695,27 @@
       box-shadow: 0 0 0 2px rgba(255,221,45,0.45), 0 6px 14px rgba(255,221,45,0.25) !important;
       z-index: 5;
     }
+
+    /* Sticky-шапки колонок Kanban при вертикальном скролле */
+    .hyp-board[data-view="kanban"] .hyp-column__head {
+      position: sticky;
+      top: var(--topbar);
+      z-index: 5;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Sticky M-axis + волны при вертикальном скролле в timeline-режиме */
+    .hyp-board[data-view="timeline"] .hyp-timeline__axis,
+    .hyp-board[data-view="timeline"] .hyp-timeline__waves,
+    .hyp-board[data-view="timeline"] .hyp-timeline__checkpoints {
+      position: sticky;
+      z-index: 4;
+      background: var(--surface);
+    }
+    .hyp-board[data-view="timeline"] .hyp-timeline__axis       { top: var(--topbar); }
+    .hyp-board[data-view="timeline"] .hyp-timeline__waves      { top: calc(var(--topbar) + 22px); }
+    .hyp-board[data-view="timeline"] .hyp-timeline__checkpoints { top: calc(var(--topbar) + 50px); }
   </style>
 </head>
 
