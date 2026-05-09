@@ -2485,6 +2485,205 @@
       .hyp-card { break-inside: avoid; animation: none !important; }
       .hyp-card[data-hidden="true"] { display: none !important; }
     }
+
+    /* ─────────────────────────────────────────────────────────── */
+    /*  Hypothesis detail panel (drawer)                          */
+    /* ─────────────────────────────────────────────────────────── */
+    .hyp-panel {
+      position: fixed;
+      top: var(--topbar);
+      right: 0;
+      width: 420px;
+      max-width: 92vw;
+      height: calc(100vh - var(--topbar));
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      box-shadow: -8px 0 24px rgba(0,0,0,0.10);
+      transform: translateX(100%);
+      transition: transform .28s cubic-bezier(.16,1,.3,1);
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+    .hyp-panel.is-open { transform: translateX(0); }
+
+    .hyp-panel-backdrop {
+      position: fixed;
+      inset: var(--topbar) 0 0 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: 99;
+      transition: background-color .2s;
+    }
+    .hyp-panel-backdrop.is-visible { pointer-events: auto; }
+
+    .hyp-panel__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hyp-panel__status {
+      font-family: var(--font-display);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1.5px solid currentColor;
+    }
+    .hyp-panel__status[data-status="plan"]     { color: var(--success); }
+    .hyp-panel__status[data-status="validate"] { color: var(--yellow); }
+    .hyp-panel__status[data-status="backlog"]  { color: var(--text3); }
+    .hyp-panel__close {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--text2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: background .15s, color .15s;
+    }
+    .hyp-panel__close:hover { background: var(--surface2); color: var(--ink); }
+    [data-theme="dark"] .hyp-panel__close:hover { color: var(--text); }
+
+    .hyp-panel__hero {
+      padding: 16px 18px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .hyp-panel__title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0 0 8px;
+    }
+    [data-theme="dark"] .hyp-panel__title { color: var(--text); }
+    .hyp-panel__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .hyp-panel__period { font-weight: 700; }
+    .hyp-panel__contrib { font-weight: 700; color: var(--success); }
+    .hyp-panel[data-status="validate"] .hyp-panel__contrib { color: #7A5E00; }
+    [data-theme="dark"] .hyp-panel[data-status="validate"] .hyp-panel__contrib { color: var(--yellow); }
+    .hyp-panel[data-status="backlog"] .hyp-panel__contrib { color: var(--text2); font-weight: 600; }
+
+    .hyp-panel__body {
+      padding: 8px 18px 16px;
+      flex: 1;
+    }
+    .hyp-panel__body section { margin-top: 18px; }
+    .hyp-panel__body section[hidden] { display: none; }
+    .hyp-panel__body h4 {
+      font-family: var(--font-display);
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text3);
+      margin: 0 0 8px;
+    }
+    .hyp-panel__body p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text2);
+    }
+    .hyp-panel__body ul,
+    .hyp-panel__body ol {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text2);
+    }
+    .hyp-panel__body li { margin-top: 4px; }
+    .hyp-panel__body li b { color: var(--ink); font-weight: 700; }
+    [data-theme="dark"] .hyp-panel__body li b { color: var(--text); }
+    .hyp-panel__body li small {
+      display: block;
+      color: var(--text3);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .hyp-panel__nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      bottom: 0;
+    }
+    .hyp-panel__prev,
+    .hyp-panel__next {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text2);
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .hyp-panel__prev:hover,
+    .hyp-panel__next:hover {
+      background: var(--ink);
+      color: var(--surface);
+      border-color: var(--ink);
+    }
+    [data-theme="dark"] .hyp-panel__prev:hover,
+    [data-theme="dark"] .hyp-panel__next:hover {
+      background: var(--yellow);
+      color: var(--ink);
+      border-color: var(--yellow);
+    }
+    .hyp-panel__prev:disabled,
+    .hyp-panel__next:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .hyp-panel__counter {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text3);
+      font-feature-settings: "tnum" 1;
+    }
+
+    @media (max-width: 720px) {
+      .hyp-panel { top: 0; height: 100vh; width: 100%; max-width: 100%; }
+      .hyp-panel-backdrop {
+        inset: 0;
+        background: rgba(0,0,0,0.40);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hyp-panel { transition: none; }
+    }
+
+    @media print {
+      .hyp-panel,
+      .hyp-panel-backdrop { display: none !important; }
+    }
   </style>
 </head>
 
@@ -4517,6 +4716,39 @@
     </section>
 
   </main>
+
+  <!-- Detail panel for hypothesis cards -->
+  <div class="hyp-panel-backdrop" aria-hidden="true"></div>
+  <aside class="hyp-panel" aria-hidden="true" role="dialog" aria-labelledby="hyp-panel-title" tabindex="-1">
+    <header class="hyp-panel__header">
+      <span class="hyp-panel__status" data-status=""></span>
+      <button type="button" class="hyp-panel__close" aria-label="Закрыть панель">×</button>
+    </header>
+
+    <div class="hyp-panel__hero">
+      <h3 id="hyp-panel-title" class="hyp-panel__title"></h3>
+      <div class="hyp-panel__meta">
+        <span class="hyp-panel__period"></span>
+        <span class="hyp-panel__contrib"></span>
+      </div>
+    </div>
+
+    <div class="hyp-panel__body">
+      <section data-field="goal"          hidden><h4>Цель</h4><p></p></section>
+      <section data-field="team"          hidden><h4>Команда</h4><ul></ul></section>
+      <section data-field="steps"         hidden><h4>Декомпозиция</h4><ol></ol></section>
+      <section data-field="validate"      hidden><h4>Что проверяем</h4><p></p></section>
+      <section data-field="counterMetrics" hidden><h4>Контр-метрики</h4><ul></ul></section>
+      <section data-field="risks"         hidden><h4>Риски</h4><ul></ul></section>
+      <section data-field="dependencies"  hidden><h4>Зависимости</h4><p></p></section>
+    </div>
+
+    <footer class="hyp-panel__nav">
+      <button type="button" class="hyp-panel__prev" aria-label="Предыдущая инициатива">← Пред.</button>
+      <span class="hyp-panel__counter" aria-live="polite">— / —</span>
+      <button type="button" class="hyp-panel__next" aria-label="Следующая инициатива">След. →</button>
+    </footer>
+  </aside>
 
   <footer class="footer">
     <div class="footer__inner" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
