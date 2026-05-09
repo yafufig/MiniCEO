@@ -2684,6 +2684,17 @@
       .hyp-panel,
       .hyp-panel-backdrop { display: none !important; }
     }
+
+    /* Активная карточка пока drawer открыт */
+    .hyp-card[data-id] { cursor: pointer; }
+    .hyp-card.is-active {
+      border-color: var(--yellow) !important;
+      box-shadow: 0 0 0 3px rgba(255,221,45,0.25), 0 8px 20px rgba(255,221,45,0.18) !important;
+    }
+    .hyp-timeline__lane .hyp-card.is-active {
+      box-shadow: 0 0 0 2px rgba(255,221,45,0.45), 0 6px 14px rgba(255,221,45,0.25) !important;
+      z-index: 5;
+    }
   </style>
 </head>
 
