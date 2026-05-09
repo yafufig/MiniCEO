@@ -346,6 +346,7 @@ function setupHypothesesView() {
 
   // Хоткеи K / T для переключения вида (только когда ввод не идёт)
   document.addEventListener('keydown', e => {
+    if (document.querySelector('.hyp-panel.is-open')) return;
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const tag = (e.target?.tagName || '').toLowerCase();
     if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) return;
@@ -431,10 +432,6 @@ function setupHypothesesPanel() {
   const backdrop = document.querySelector('.hyp-panel-backdrop');
   if (!panel || !backdrop || !window.HYPOTHESES_DATA) return;
 
-  // Уникальные карточки (по data-id) — для определения общего числа
-  const allIds = Array.from(new Set(
-    Array.from(document.querySelectorAll('.hyp-card[data-id]')).map(c => c.dataset.id)
-  ));
   const orderInData = Object.keys(window.HYPOTHESES_DATA);
 
   let currentId = null;
