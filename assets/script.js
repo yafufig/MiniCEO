@@ -577,6 +577,58 @@ function setupHypothesesPanel() {
   }
 }
 
+/* ── Hypothesis search ─────────────────────────────────────── */
+function setupHypothesesSearch() {
+  const input = document.querySelector('.hyp-search');
+  const counter = document.querySelector('.hyp-search__count');
+  if (!input) return;
+
+  // Уникальные карточки для подсчёта
+  const allCards = Array.from(document.querySelectorAll('.hyp-card[data-id]'));
+  const uniqueIds = Array.from(new Set(allCards.map(c => c.dataset.id)));
+
+  function searchableText(card) {
+    return [
+      card.querySelector('.hyp-card__title')?.textContent || '',
+      card.querySelector('.hyp-card__body')?.textContent || '',
+      card.querySelector('.hyp-card__meta')?.textContent || '',
+      Array.from(card.querySelectorAll('.hyp-card__tag')).map(t => t.textContent).join(' '),
+      card.querySelector('.hyp-card__artifact')?.textContent || '',
+    ].join(' ').toLowerCase();
+  }
+
+  function apply(query) {
+    const q = (query || '').trim().toLowerCase();
+    const matchedIds = new Set();
+    allCards.forEach(card => {
+      if (!q) {
+        card.removeAttribute('data-search-hidden');
+        matchedIds.add(card.dataset.id);
+        return;
+      }
+      const text = searchableText(card);
+      if (text.includes(q)) {
+        card.removeAttribute('data-search-hidden');
+        matchedIds.add(card.dataset.id);
+      } else {
+        card.setAttribute('data-search-hidden', 'true');
+      }
+    });
+    if (counter) {
+      counter.textContent = q
+        ? `Найдено: ${matchedIds.size} из ${uniqueIds.length}`
+        : '';
+    }
+  }
+
+  let t = null;
+  input.addEventListener('input', () => {
+    if (t) clearTimeout(t);
+    t = setTimeout(() => apply(input.value), 80);
+  });
+  input.addEventListener('search', () => apply(input.value));
+}
+
 /* ── Boot ───────────────────────────────────────────────────── */
 document.addEventListener('scroll', onScroll, { passive: true });
 
@@ -591,6 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupRoadmap();
   setupHypothesesView();
   setupHypothesesPanel();
+  setupHypothesesSearch();
 
   // Reduced motion hint
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
