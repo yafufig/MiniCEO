@@ -316,6 +316,115 @@ function setupRoadmap() {
   });
 }
 
+/* ── Hypotheses view (Kanban / Timeline) ─────────────────── */
+function setupHypothesesView() {
+  const board = document.querySelector('.hyp-board');
+  const switcher = document.querySelector('.view-switcher');
+  if (!board || !switcher) return;
+
+  const KEY = 'miniceo:hyp-view';
+  const buttons = Array.from(switcher.querySelectorAll('button[data-view]'));
+  const isMobile = () => window.matchMedia('(max-width: 720px)').matches;
+
+  function applyView(view) {
+    const target = isMobile() ? 'kanban' : (view === 'timeline' ? 'timeline' : 'kanban');
+    board.setAttribute('data-view', target);
+    buttons.forEach(b => {
+      const active = b.getAttribute('data-view') === target;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    try { localStorage.setItem(KEY, view); } catch {}
+  }
+
+  const saved = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
+  applyView(saved === 'timeline' ? 'timeline' : 'kanban');
+
+  buttons.forEach(b => {
+    b.addEventListener('click', () => applyView(b.getAttribute('data-view')));
+  });
+
+  // Хоткеи K / T для переключения вида (только когда ввод не идёт)
+  document.addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const tag = (e.target?.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) return;
+    if (e.key === 'k' || e.key === 'K' || e.key === 'л' || e.key === 'Л') applyView('kanban');
+    else if (e.key === 't' || e.key === 'T' || e.key === 'е' || e.key === 'Е') applyView('timeline');
+  });
+
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      const stored = (() => { try { return localStorage.getItem(KEY); } catch { return null; } })();
+      applyView(stored === 'timeline' ? 'timeline' : 'kanban');
+    }, 120);
+  });
+
+  // Backlog-фильтр (Все / Готов к ревью / Ждёт ресурса)
+  setupBacklogFilter();
+
+  // Timeline: hover на лейн-карточке → подсветка её периода на оси
+  setupTimelineHoverHighlight();
+}
+
+function setupBacklogFilter() {
+  const filter = document.querySelector('.hyp-column[data-status="backlog"] .hyp-filter');
+  if (!filter) return;
+  const buttons = Array.from(filter.querySelectorAll('button[data-filter]'));
+  const cards = Array.from(document.querySelectorAll('.hyp-column[data-status="backlog"] .hyp-card[data-status="backlog"]'));
+
+  function tagOfCard(card) {
+    if (card.querySelector('.hyp-card__tag--ready'))  return 'ready';
+    if (card.querySelector('.hyp-card__tag--awaits')) return 'awaits';
+    return 'all';
+  }
+
+  function applyFilter(mode) {
+    cards.forEach(c => {
+      const t = tagOfCard(c);
+      const visible = (mode === 'all') || (mode === t);
+      c.setAttribute('data-hidden', visible ? 'false' : 'true');
+    });
+    buttons.forEach(b => {
+      b.classList.toggle('is-active', b.getAttribute('data-filter') === mode);
+      b.setAttribute('aria-pressed', b.getAttribute('data-filter') === mode ? 'true' : 'false');
+    });
+  }
+
+  buttons.forEach(b => b.addEventListener('click', () => applyFilter(b.getAttribute('data-filter'))));
+  applyFilter('all');
+}
+
+function setupTimelineHoverHighlight() {
+  const rail = document.querySelector('.hyp-timeline__rail');
+  const highlight = document.querySelector('.hyp-timeline__highlight');
+  if (!rail || !highlight) return;
+
+  const cards = Array.from(document.querySelectorAll('.hyp-timeline__lane .hyp-card'));
+  cards.forEach(card => {
+    // Native HTML title — браузер сам покажет полный заголовок если он обрезан
+    const title = card.querySelector('.hyp-card__title')?.textContent.trim() || '';
+    const period = card.querySelector('.hyp-card__period')?.textContent.trim() || '';
+    const contrib = card.querySelector('.hyp-card__contrib')?.textContent.trim() || '';
+    if (title) card.setAttribute('title', `${title} · ${period} · ${contrib}`);
+
+    card.addEventListener('mouseenter', () => {
+      const start = parseFloat(card.style.getPropertyValue('--start')) || 1;
+      const end   = parseFloat(card.style.getPropertyValue('--end'))   || 1;
+      const left  = ((start - 1) / 23) * 100;
+      const width = ((end - start) / 23) * 100;
+      highlight.style.left  = left + '%';
+      highlight.style.width = Math.max(width, 1.5) + '%';
+      rail.classList.add('is-highlighting');
+    });
+    card.addEventListener('mouseleave', () => {
+      rail.classList.remove('is-highlighting');
+    });
+  });
+}
+
 /* ── Boot ───────────────────────────────────────────────────── */
 document.addEventListener('scroll', onScroll, { passive: true });
 
@@ -327,6 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPdfExport();
   setupAnchorLinks();
   setupScrollReveal();
+  setupRoadmap();
+  setupHypothesesView();
 
   // Reduced motion hint
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
