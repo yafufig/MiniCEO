@@ -2150,21 +2150,21 @@
     }
     .hyp-timeline__lane {
       position: relative;
-      height: 54px;
+      height: 64px;
       z-index: 1;
     }
     .hyp-timeline__lane .hyp-card {
       position: absolute;
       top: 0;
-      height: 54px;
-      padding: 6px 8px;
+      height: 64px;
+      padding: 7px 8px;
       font-size: 11px;
       line-height: 1.2;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       border-radius: 8px;
       border: 1px solid transparent;
       border-left-width: 3px;
@@ -2195,7 +2195,7 @@
     [data-theme="dark"] .hyp-timeline__lane .hyp-card[data-status="validate"] {
       background: linear-gradient(180deg, rgba(255,221,45,0.18) 0%, rgba(255,221,45,0.10) 100%);
     }
-    /* Текст в lanes — title в 3 строки, meta компактно */
+    /* Текст в lanes — title в 2 строки, meta компактно */
     .hyp-timeline__lane .hyp-card .hyp-card__title {
       font-size: 10.5px;
       font-weight: 800;
@@ -2203,13 +2203,14 @@
       white-space: normal;
       overflow: hidden;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
-      line-clamp: 3;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
       -webkit-box-orient: vertical;
       text-overflow: ellipsis;
       letter-spacing: -0.01em;
       word-break: break-word;
       overflow-wrap: anywhere;
+      flex: 0 0 auto;
     }
     .hyp-timeline__lane .hyp-card .hyp-card__meta {
       font-size: 9px;
