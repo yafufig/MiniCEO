@@ -425,6 +425,161 @@ function setupTimelineHoverHighlight() {
   });
 }
 
+/* ── Hypothesis detail panel (drawer) ─────────────────────── */
+function setupHypothesesPanel() {
+  const panel    = document.querySelector('.hyp-panel');
+  const backdrop = document.querySelector('.hyp-panel-backdrop');
+  if (!panel || !backdrop || !window.HYPOTHESES_DATA) return;
+
+  // Уникальные карточки (по data-id) — для определения общего числа
+  const allIds = Array.from(new Set(
+    Array.from(document.querySelectorAll('.hyp-card[data-id]')).map(c => c.dataset.id)
+  ));
+  const orderInData = Object.keys(window.HYPOTHESES_DATA);
+
+  let currentId = null;
+  let lastTrigger = null;
+
+  function render(id) {
+    const data = window.HYPOTHESES_DATA[id];
+    if (!data) return;
+
+    panel.setAttribute('data-status', data.status);
+    panel.querySelector('.hyp-panel__status').setAttribute('data-status', data.status);
+    panel.querySelector('.hyp-panel__status').textContent =
+      data.status === 'plan' ? 'В плане' :
+      data.status === 'validate' ? 'Проверяю' : 'Backlog';
+
+    panel.querySelector('.hyp-panel__title').textContent = data.title;
+    panel.querySelector('.hyp-panel__period').textContent = data.period;
+    panel.querySelector('.hyp-panel__contrib').textContent = data.contrib;
+
+    // Поля
+    setText(panel, 'goal', data.goal);
+    setList(panel, 'team', data.team, item =>
+      `<li><b>${escape(item.role)}</b><small>${escape(item.load || '')}</small></li>`
+    );
+    setList(panel, 'steps', data.steps, item => `<li>${escape(item)}</li>`);
+    setText(panel, 'validate', data.validate);
+    setList(panel, 'counterMetrics', data.counterMetrics, item => `<li>${escape(item)}</li>`);
+    setList(panel, 'risks', data.risks, item =>
+      `<li><b>${escape(item.name)}</b><small>${escape(item.mitigation || '')}</small></li>`
+    );
+    setText(panel, 'dependencies', data.dependencies);
+
+    // Counter
+    const idx = orderInData.indexOf(id);
+    panel.querySelector('.hyp-panel__counter').textContent =
+      `${idx + 1} / ${orderInData.length}`;
+    panel.querySelector('.hyp-panel__prev').disabled = idx <= 0;
+    panel.querySelector('.hyp-panel__next').disabled = idx >= orderInData.length - 1;
+  }
+
+  function setText(root, field, value) {
+    const sec = root.querySelector(`section[data-field="${field}"]`);
+    if (!sec) return;
+    if (value && String(value).trim()) {
+      sec.querySelector('p').textContent = value;
+      sec.hidden = false;
+    } else {
+      sec.hidden = true;
+    }
+  }
+
+  function setList(root, field, items, formatter) {
+    const sec = root.querySelector(`section[data-field="${field}"]`);
+    if (!sec) return;
+    const list = sec.querySelector('ul, ol');
+    if (Array.isArray(items) && items.length) {
+      list.innerHTML = items.map(formatter).join('');
+      sec.hidden = false;
+    } else {
+      sec.hidden = true;
+    }
+  }
+
+  function escape(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function highlightActive(id) {
+    document.querySelectorAll('.hyp-card.is-active')
+      .forEach(c => c.classList.remove('is-active'));
+    document.querySelectorAll(`.hyp-card[data-id="${id}"]`)
+      .forEach(c => c.classList.add('is-active'));
+  }
+
+  function open(id, trigger) {
+    if (!window.HYPOTHESES_DATA[id]) return;
+    currentId = id;
+    lastTrigger = trigger || null;
+    render(id);
+    panel.classList.add('is-open');
+    backdrop.classList.add('is-visible');
+    panel.setAttribute('aria-hidden', 'false');
+    panel.focus();
+    highlightActive(id);
+    if (history && history.replaceState) history.replaceState(null, '', '#card=' + id);
+  }
+
+  function close() {
+    panel.classList.remove('is-open');
+    backdrop.classList.remove('is-visible');
+    panel.setAttribute('aria-hidden', 'true');
+    document.querySelectorAll('.hyp-card.is-active')
+      .forEach(c => c.classList.remove('is-active'));
+    if (history && history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    currentId = null;
+  }
+
+  function navigate(direction) {
+    if (!currentId) return;
+    const idx = orderInData.indexOf(currentId);
+    if (idx < 0) return;
+    const next = idx + direction;
+    if (next < 0 || next >= orderInData.length) return;
+    open(orderInData[next], null);
+  }
+
+  // Click triggers
+  document.querySelectorAll('.hyp-card[data-id]').forEach(card => {
+    card.addEventListener('click', () => open(card.dataset.id, card));
+  });
+
+  // Panel controls
+  panel.querySelector('.hyp-panel__close').addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  panel.querySelector('.hyp-panel__prev').addEventListener('click', () => navigate(-1));
+  panel.querySelector('.hyp-panel__next').addEventListener('click', () => navigate(1));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (!panel.classList.contains('is-open')) return;
+    const tag = (e.target?.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target?.isContentEditable) return;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === 'Escape') { e.preventDefault(); close(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'j' || e.key === 'J') { e.preventDefault(); navigate(-1); }
+    else if (e.key === 'ArrowRight' || e.key === 'k' || e.key === 'K') { e.preventDefault(); navigate(1); }
+  });
+
+  // Hash routing on initial load
+  if (location.hash.startsWith('#card=')) {
+    const id = location.hash.slice('#card='.length);
+    if (window.HYPOTHESES_DATA[id]) {
+      setTimeout(() => {
+        document.getElementById('b3-hypotheses')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        open(id, null);
+      }, 100);
+    }
+  }
+}
+
 /* ── Boot ───────────────────────────────────────────────────── */
 document.addEventListener('scroll', onScroll, { passive: true });
 
@@ -438,6 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupScrollReveal();
   setupRoadmap();
   setupHypothesesView();
+  setupHypothesesPanel();
 
   // Reduced motion hint
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
